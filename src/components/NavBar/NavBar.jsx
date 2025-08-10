@@ -6,11 +6,9 @@ const NavBar = (props) => {
     <nav>
       <ul>
         <li><Link to="/"> Home </Link></li>
-        <li><Link to="/hoots"> Hoots </Link></li>
       {props.user ? (
         <>
           <li>Welcome {props.user.username}</li>
-          <li><Link to="/hoots/new">New Hoot</Link></li>
           <li><Link to='/' onClick={props.handleSignOut}>Sign Out</Link></li>
         </>
         ) : (
