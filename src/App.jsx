@@ -5,6 +5,7 @@ import SignIn from './components/SignIn/SignIn'
 import { Route, Routes, useNavigate } from 'react-router-dom'
 import * as authService from './services/authService.js'
 import { useState, useEffect } from 'react'
+import RestaurantDetails from './components/RestaurantDetails /RestaurantDetails .jsx'
 
 const App = () => {
 
@@ -58,7 +59,7 @@ const App = () => {
             </>
           )}
           <Route path='/' element={<h1>Hello world!</h1>} />
-        
+           <Route path='/restaurant/:restaurantId' element={<RestaurantDetails user={user}/>} />
           <Route path='*' element={<h1>404</h1>} />
       </Routes>
     </>
