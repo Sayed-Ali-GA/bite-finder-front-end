@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-// import * as restaurantService from '../../services/restaurantService'
+import * as restaurantService from '../../services/restaurantService'
 import { Link } from 'react-router-dom'
 import CommentForm from '../CommentForm/CommentForm'
 
@@ -63,4 +63,4 @@ const RestaurantDetails = (props) => {
 
 }
 
-  export default RestaurantDetails
+  export default RestaurantDetails 
