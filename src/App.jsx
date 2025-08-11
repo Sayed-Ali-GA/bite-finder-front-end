@@ -6,6 +6,7 @@ import { Route, Routes, useNavigate } from 'react-router-dom'
 import * as authService from './services/authService.js'
 import { useState, useEffect } from 'react'
 import RestaurantForm from './components/RestaurantForm/RestaurantForm.jsx'
+import RestaurantList from './components/RestaurantList/RestaurantList.jsx'
 
 
 import * as menuService from './services/menuService.js'
@@ -16,10 +17,11 @@ const App = () => {
 
   const initialState = authService.getUser()
   const [user, setUser] = useState(initialState)
-  const [menus, setMenus] = useState([]) // plural naming
-  const [selectedMenu, setSelectedMenu] = useState(null)
+  const [restaurants, setRestaurants] = useState([]) 
+  const [selectedRestaurant, setSelectedRestaurant] = useState(null)
 
-  // Load menus on mount
+  const [menus, setMenus] = useState([]) 
+
   useEffect(() => {
     const fetchMenus = async () => {
       try {
@@ -31,6 +33,10 @@ const App = () => {
     }
     fetchMenus()
   }, [])
+
+  const handleSelect = (restaurant) => {
+    selectedRestaurant(restaurant);
+  }
 
   const handleSignUp = async (formData) => {
     try {
@@ -83,6 +89,7 @@ const App = () => {
         {user ? (
           <>
             {/* Protected Routes */}
+            <Route path='/restaurant' element={<RestaurantList restaurants={restaurants} handleSelect={handleSelect}/>}  />
             <Route path='/restaurant/new' element={<RestaurantForm/>} user={user}  />
             <Route
               path="/restaurant/menu"
