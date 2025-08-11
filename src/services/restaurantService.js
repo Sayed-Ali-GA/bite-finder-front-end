@@ -27,7 +27,7 @@ const create = async (formData) => {
   try {
     const token = localStorage.getItem('token')
 
-    const res = await fetch(BASE_URL, {
+    const res = await fetch(`${BASE_URL}/new`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

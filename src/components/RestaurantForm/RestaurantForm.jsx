@@ -16,6 +16,7 @@ const RestaurantForm = (props)=>{
 
     const handleSubmit = (evt)=>{
     evt.preventDefault()
+    props.handleAddRestaurant(formData)
     setFormData(initialState)
     }
 
@@ -58,7 +59,7 @@ const RestaurantForm = (props)=>{
             onChange={handleChange} 
             ></textarea>
             <button>Submit</button>
-        </form >
+        </form>
         </>
         
     )

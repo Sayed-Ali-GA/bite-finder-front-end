@@ -10,7 +10,7 @@ import MenuForm from './components/MenuForm/menuForm.jsx'
 import * as menuService from './services/menuService.js'
 import RestaurantDetails from './components/RestaurantDetails /RestaurantDetails .jsx'
 
-
+import * as restaurantService from './services/restaurantService.js'
 import RestaurantForm from './components/RestaurantForm/RestaurantForm.jsx'
 import RestaurantList from './components/RestaurantList/RestaurantList.jsx'
 
@@ -72,6 +72,10 @@ const handleMenuSelect = (menu) => {
     setUser(res)
   }
 
+  const handleAddRestaurant = async (formData)=>{
+    await restaurantService.create(formData)
+  }
+
   const handleAddMenu = async (formData) => {
     try {
       const newMenu = await menuService.create(formData)
@@ -97,7 +101,7 @@ const handleMenuSelect = (menu) => {
   }
 
    const handleDeleterestaurant = async (restaurantId) => {
-    await hootService.deleteRestaurant(restaurantId)
+    await restaurantService.deleteRestaurant(restaurantId)
     setRestaurant(restaurant.filter(restaurant => restaurant._id !== restaurantId))
     navigate('/restaurant')
   } 
@@ -110,7 +114,7 @@ const handleMenuSelect = (menu) => {
           <>
             {/* Protected Routes */}
             <Route path='/restaurant' element={<RestaurantList restaurants={restaurants} handleSelect={handleRestaurantSelect}/>}  />
-            <Route path='/restaurant/new' element={<RestaurantForm/>} user={user}  />
+            <Route path='/restaurant/new' element={<RestaurantForm handleAddRestaurant={handleAddRestaurant}/>} user={user}  />
             <Route
               path="/restaurant/menu"
               element={
@@ -119,10 +123,10 @@ const handleMenuSelect = (menu) => {
                   handleUpdateMenu={handleUpdateMenu}
                   selected={selectedMenu}
                 />
-
+              }
+            />
 
             <Route path='/restaurant/:restaurantId' element={<RestaurantDetails user={user} />} /> 
-
 
           </>
         ) : (
