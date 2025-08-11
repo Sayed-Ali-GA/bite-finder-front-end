@@ -5,6 +5,7 @@ import SignIn from './components/SignIn/SignIn'
 import { Route, Routes, useNavigate } from 'react-router-dom'
 import * as authService from './services/authService.js'
 import { useState, useEffect } from 'react'
+import RestaurantForm from './components/RestaurantForm/RestaurantForm.jsx'
 
 const App = () => {
 
@@ -48,7 +49,7 @@ const App = () => {
           {user ? (
             // Protected Routes
             <>
-         
+            <Route path='/restaurant/new' element={<RestaurantForm/>} user={user}  />
             </>
           ) : (
             // Public Routes
