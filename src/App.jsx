@@ -6,7 +6,7 @@ import { Route, Routes, useNavigate } from 'react-router-dom'
 import * as authService from './services/authService.js'
 
 import { useState, useEffect } from 'react' 
-import MenuForm from './components/MenuForm/MenuForm'
+import MenuForm from './components/MenuForm/menuForm.jsx'
 import * as menuService from './services/menuService.js'
 import RestaurantDetails from './components/RestaurantDetails /RestaurantDetails .jsx'
 
@@ -81,11 +81,17 @@ const App = () => {
     }
   }
 
+   const handleDeleterestaurant = async (restaurantId) => {
+    await hootService.deleteRestaurant(restaurantId)
+    setRestaurant(restaurant.filter(restaurant => restaurant._id !== restaurantId))
+    navigate('/restaurant')
+  } 
+
   return (
     <>
       <NavBar user={user} handleSignOut={handleSignOut} />
       <Routes>
-        {user ? (
+        {user ? ( 
           <>
             {/* Protected Routes */}
 
@@ -93,10 +99,10 @@ const App = () => {
             <Route path='/restaurant/:restaurantId' element={<RestaurantDetails user={user} />} /> 
 
 
-           <Route path='/restaurant/new' element={<RestaurantForm/>} user={user}  />
+           <Route path='/restaurant/new' element={<RestaurantForm/>} user={user} handleDeleterestaurant={handleDeleterestaurant} />
           
-              }
-            />
+             
+            
 
           </>
         ) : (
