@@ -12,6 +12,7 @@ import RestaurantDetails from './components/RestaurantDetails /RestaurantDetails
 
 
 import RestaurantForm from './components/RestaurantForm/RestaurantForm.jsx'
+import RestaurantList from './components/RestaurantList/RestaurantList.jsx'
 
 
 
@@ -21,10 +22,13 @@ const App = () => {
 
   const initialState = authService.getUser()
   const [user, setUser] = useState(initialState)
-  const [menus, setMenus] = useState([]) // plural naming
+  const [restaurants, setRestaurants] = useState([]) 
+  const [selectedRestaurant, setSelectedRestaurant] = useState(null)
+
+  const [menus, setMenus] = useState([]) 
   const [selectedMenu, setSelectedMenu] = useState(null)
 
-  // Load menus on mount
+
   useEffect(() => {
     const fetchMenus = async () => {
       try {
@@ -36,6 +40,17 @@ const App = () => {
     }
     fetchMenus()
   }, [])
+
+
+const handleRestaurantSelect = (restaurant) => {
+  setSelectedRestaurant(restaurant);
+  setSelectedMenu(null); 
+};
+
+const handleMenuSelect = (menu) => {
+  if (!selectedRestaurant) return; 
+  setSelectedMenu(menu);
+};
 
   const handleSignUp = async (formData) => {
     try {
@@ -88,12 +103,20 @@ const App = () => {
         {user ? (
           <>
             {/* Protected Routes */}
+            <Route path='/restaurant' element={<RestaurantList restaurants={restaurants} handleSelect={handleRestaurantSelect}/>}  />
+            <Route path='/restaurant/new' element={<RestaurantForm/>} user={user}  />
+            <Route
+              path="/restaurant/menu"
+              element={
+                <MenuForm
+                  handleAddMenu={handleAddMenu}
+                  handleUpdateMenu={handleUpdateMenu}
+                  selected={selectedMenu}
+                />
 
-            <Route path="/restaurant/menu"element={<MenuForm handleAddMenu={handleAddMenu} handleUpdateMenu={handleUpdateMenu} selected={selectedMenu}/>}/>
+
             <Route path='/restaurant/:restaurantId' element={<RestaurantDetails user={user} />} /> 
 
-
-           <Route path='/restaurant/new' element={<RestaurantForm/>} user={user}  />
           
               }
             />
