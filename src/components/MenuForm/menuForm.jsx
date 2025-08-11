@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 const MenuForm = (props) => {
-    // console.log(props)
     const initialState = {
         name: '',
         type: '',
