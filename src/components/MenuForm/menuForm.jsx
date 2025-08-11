@@ -19,9 +19,9 @@ const MenuForm = (props) => {
         evt.preventDefault();
 
         if (props.selected) {
-            props.handleUpdateMenu(formData, props.selected._id);
+            props.handleUpdateMenu(props.restaurantId, formData, props.selected._id);
         } else {
-            props.handleAddMenu(formData);
+            props.handleAddMenu(props.restaurantId, formData);
         }
 
         setFormData(initialState);

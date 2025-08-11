@@ -1,9 +1,9 @@
-const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}/restaurant/menu`;
+const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}/restaurant`;
 
-const index = async () => {
+const index = async (restaurantId) => {
     try {
         const token = localStorage.getItem('token');
-        const res = await fetch(BASE_URL, {
+        const res = await fetch(`${BASE_URL}/${restaurantId}/menu`, {
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
@@ -15,10 +15,10 @@ const index = async () => {
     }
 };
 
-const create = async (formData) => {
+const create = async (restaurantId, formData) => {
     try {
         const token = localStorage.getItem('token');
-        const res = await fetch(BASE_URL, {
+        const res = await fetch(`${BASE_URL}/${restaurantId}/menu`, {
             method: 'POST',
             headers: { 
                 'Content-Type': 'application/json',
@@ -32,10 +32,10 @@ const create = async (formData) => {
     }
 };
 
-const update = async (formData, menuId) => {
+const update = async (restaurantId, formData, menuId) => {
     try {
         const token = localStorage.getItem('token');
-        const res = await fetch(`${BASE_URL}/${menuId}`, {
+        const res = await fetch(`${BASE_URL}/${restaurantId}/menu/${menuId}`, {
             method: 'PUT',
             headers: { 
                 'Content-Type': 'application/json',
@@ -49,10 +49,10 @@ const update = async (formData, menuId) => {
     }
 };
 
-const deleteMenu = async (menuId) => {
+const deleteMenu = async (restaurantId,menuId) => {
     try {
         const token = localStorage.getItem('token');
-        const res = await fetch(`${BASE_URL}/${menuId}`, {
+        const res = await fetch(`${BASE_URL}/${restaurantId}/menu/${menuId}`, {
             method: 'DELETE',
             headers: {
                 Authorization: `Bearer ${token}`,

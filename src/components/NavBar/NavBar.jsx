@@ -6,18 +6,20 @@ const NavBar = (props) => {
     <nav>
       <ul>
         <li><Link to="/"> Home </Link></li>
-      {props.user ? (
-        <>
-          <li>Welcome {props.user.username}</li>
-          <li><Link to='/' onClick={props.handleSignOut}>Sign Out</Link></li>
-        </>
+        {props.user ? (
+          <>
+            <li><Link to="/restaurant">Restaurants</Link></li>
+            <li>Welcome {props.user.username}</li>
+
+            <li><Link to='/' onClick={props.handleSignOut}>Sign Out</Link></li>
+          </>
         ) : (
           <>
             <li><Link to="/sign-up">Sign Up</Link></li>
             <li><Link to="/sign-in">Sign In</Link></li>
           </>
-          ) }
-        </ul>
+        )}
+      </ul>
     </nav>
   )
 }
