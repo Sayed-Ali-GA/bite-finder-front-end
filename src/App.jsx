@@ -5,6 +5,7 @@ import SignIn from './components/SignIn/SignIn'
 import { Route, Routes, useNavigate } from 'react-router-dom'
 import * as authService from './services/authService.js'
 import { useState, useEffect } from 'react'
+import RestaurantDetails from './components/RestaurantDetails /RestaurantDetails .jsx'
 
 import * as menuService from './services/menuService.js'
 import MenuForm from './components/menuForm/menuForm.jsx'
@@ -102,6 +103,7 @@ const App = () => {
 
         <Route path='/' element={<h1>Hello world!</h1>} />
         <Route path='*' element={<h1>404</h1>} />
+
       </Routes>
     </>
   )
