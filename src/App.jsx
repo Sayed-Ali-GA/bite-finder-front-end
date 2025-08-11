@@ -73,7 +73,7 @@ const App = () => {
     setUser(res)
   }
 
-  const handleAddRestaurant = async (formData) => {
+  const handleAddRestaurant = async (formData)=>{
     await restaurantService.create(formData)
   }
 
@@ -126,7 +126,8 @@ const App = () => {
                 restaurants={restaurants}
                 handleSelect={handleRestaurantSelect}
               />} />
-            <Route path='/restaurant/new' element={<RestaurantForm handleAddRestaurant={handleAddRestaurant} />} user={user} />
+            <Route path='/restaurant' element={<RestaurantList restaurants={restaurants} handleSelect={handleRestaurantSelect}/>}  />
+            <Route path='/restaurant/new' element={<RestaurantForm handleAddRestaurant={handleAddRestaurant}/>} user={user}  />
             <Route
               path="/restaurant/menu"
               element={
