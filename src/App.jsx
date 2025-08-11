@@ -8,7 +8,7 @@ import { useState, useEffect } from 'react'
 import RestaurantDetails from './components/RestaurantDetails /RestaurantDetails .jsx'
 
 import * as menuService from './services/menuService.js'
-import MenuForm from './components/MenuForm/MenuForm.jsx'
+import MenuForm from './components/menuForm/menuForm.jsx'
 
 const App = () => {
   const navigate = useNavigate()
