@@ -5,10 +5,11 @@ import SignIn from './components/SignIn/SignIn'
 import { Route, Routes, useNavigate } from 'react-router-dom'
 import * as authService from './services/authService.js'
 import { useState, useEffect } from 'react'
-import RestaurantDetails from './components/RestaurantDetails /RestaurantDetails .jsx'
+import RestaurantForm from './components/RestaurantForm/RestaurantForm.jsx'
+
 
 import * as menuService from './services/menuService.js'
-import MenuForm from './components/MenuForm/MenuForm.jsx'
+import MenuForm from './components/menuForm/menuForm.jsx'
 
 const App = () => {
   const navigate = useNavigate()
@@ -82,6 +83,7 @@ const App = () => {
         {user ? (
           <>
             {/* Protected Routes */}
+            <Route path='/restaurant/new' element={<RestaurantForm/>} user={user}  />
             <Route
               path="/restaurant/menu"
               element={
