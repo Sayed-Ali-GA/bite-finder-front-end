@@ -21,6 +21,8 @@ const App = () => {
   const [selectedRestaurant, setSelectedRestaurant] = useState(null)
 
   const [menus, setMenus] = useState([]) 
+  const [selectedMenu, setSelectedMenu] = useState(null)
+
 
   useEffect(() => {
     const fetchMenus = async () => {
@@ -34,9 +36,16 @@ const App = () => {
     fetchMenus()
   }, [])
 
-  const handleSelect = (restaurant) => {
-    selectedRestaurant(restaurant);
-  }
+
+const handleRestaurantSelect = (restaurant) => {
+  setSelectedRestaurant(restaurant);
+  setSelectedMenu(null); 
+};
+
+const handleMenuSelect = (menu) => {
+  if (!selectedRestaurant) return; 
+  setSelectedMenu(menu);
+};
 
   const handleSignUp = async (formData) => {
     try {
@@ -89,7 +98,7 @@ const App = () => {
         {user ? (
           <>
             {/* Protected Routes */}
-            <Route path='/restaurant' element={<RestaurantList restaurants={restaurants} handleSelect={handleSelect}/>}  />
+            <Route path='/restaurant' element={<RestaurantList restaurants={restaurants} handleSelect={handleRestaurantSelect}/>}  />
             <Route path='/restaurant/new' element={<RestaurantForm/>} user={user}  />
             <Route
               path="/restaurant/menu"
