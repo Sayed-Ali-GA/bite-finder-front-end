@@ -5,7 +5,7 @@ import SignIn from './components/SignIn/SignIn'
 import { Route, Routes, useNavigate } from 'react-router-dom'
 import * as authService from './services/authService.js'
 
-import { useState, useEffect } from 'react' 
+import { useState, useEffect } from 'react'
 import MenuForm from './components/MenuForm/menuForm.jsx'
 import * as menuService from './services/menuService.js'
 import RestaurantDetails from './components/RestaurantDetails /RestaurantDetails .jsx'
@@ -22,10 +22,10 @@ const App = () => {
 
   const initialState = authService.getUser()
   const [user, setUser] = useState(initialState)
-  const [restaurants, setRestaurants] = useState([]) 
+  const [restaurants, setRestaurants] = useState([])
   const [selectedRestaurant, setSelectedRestaurant] = useState(null)
 
-  const [menus, setMenus] = useState([]) 
+  const [menus, setMenus] = useState([])
   const [selectedMenu, setSelectedMenu] = useState(null)
 
 
@@ -42,15 +42,15 @@ const App = () => {
   }, [])
 
 
-const handleRestaurantSelect = (restaurant) => {
-  setSelectedRestaurant(restaurant);
-  setSelectedMenu(null); 
-};
+  const handleRestaurantSelect = (restaurant) => {
+    setSelectedRestaurant(restaurant);
+    setSelectedMenu(null);
+  };
 
-const handleMenuSelect = (menu) => {
-  if (!selectedRestaurant) return; 
-  setSelectedMenu(menu);
-};
+  const handleMenuSelect = (menu) => {
+    if (!selectedRestaurant) return;
+    setSelectedMenu(menu);
+  };
 
   const handleSignUp = async (formData) => {
     try {
@@ -96,21 +96,21 @@ const handleMenuSelect = (menu) => {
     }
   }
 
-   const handleDeleterestaurant = async (restaurantId) => {
+  const handleDeleterestaurant = async (restaurantId) => {
     await hootService.deleteRestaurant(restaurantId)
     setRestaurant(restaurant.filter(restaurant => restaurant._id !== restaurantId))
     navigate('/restaurant')
-  } 
+  }
 
   return (
     <>
       <NavBar user={user} handleSignOut={handleSignOut} />
       <Routes>
-        {user ? ( 
+        {user ? (
           <>
             {/* Protected Routes */}
-            <Route path='/restaurant' element={<RestaurantList restaurants={restaurants} handleSelect={handleRestaurantSelect}/>}  />
-            <Route path='/restaurant/new' element={<RestaurantForm/>} user={user}  />
+            <Route path='/restaurant' element={<RestaurantList restaurants={restaurants} handleSelect={handleRestaurantSelect} />} />
+            <Route path='/restaurant/new' element={<RestaurantForm />} user={user} />
             <Route
               path="/restaurant/menu"
               element={
@@ -118,10 +118,10 @@ const handleMenuSelect = (menu) => {
                   handleAddMenu={handleAddMenu}
                   handleUpdateMenu={handleUpdateMenu}
                   selected={selectedMenu}
-                />
+                /> } />
 
 
-            <Route path='/restaurant/:restaurantId' element={<RestaurantDetails user={user} />} /> 
+            <Route path='/restaurant/:restaurantId' element={<RestaurantDetails user={user} />} />
 
 
           </>
