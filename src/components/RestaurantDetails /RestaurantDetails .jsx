@@ -33,19 +33,21 @@ const RestaurantDetails = (props) => {
     <header className="res-details">
       
 
-        <h1>{restaurant.title}</h1>
+        <h1>{restaurant.name}</h1>
 
-         <p>{restaurant.auther.username} Posted on {new Date (restaurant.createdAt).toLocaleDateString()}</p> 
+        <p>{restaurant.ownerId?.username || "Unknown"} Posted on {restaurant.createdAt ? new Date(restaurant.createdAt).toLocaleDateString() : "Date not available"}</p>
 
-         {restaurant.auther._id === props.user?._id && (
-            <div>
-                 <Link to={`/restaurant/${restaurantId}/edit`}>Edit</Link>
-                 <button onClick={() => props.handleDeleteRES(restaurantId)}>Delete</button>
-            </div>
-         )}
+
+       {restaurant.ownerId?._id === props.user?._id && (
+  <div>
+    <Link to={`/restaurant/${restaurantId}/edit`}>Edit</Link>
+    <button onClick={() => props.handleDeleterestaurant(restaurantId)}>Delete</button>
+  </div>
+)}
+
 
     </header>
-    
+    <Link to={`/restaurant/${restaurant._id}/menu`}>Menu</Link>
     <section>
           <h2>Comments:</h2>
             <CommentForm handleAddComment={handleAddComment} />
@@ -54,7 +56,7 @@ const RestaurantDetails = (props) => {
 
             {restaurant.comments.map((comment) => (
                  <div key={comment._id}>
-                     <p>{comment.text}</p>
+                     <p>{comment.authorId.username}: {comment.content}</p>
                  </div>
             ))}
     </section>
@@ -63,4 +65,4 @@ const RestaurantDetails = (props) => {
 
 }
 
-  export default RestaurantDetails 
+export default RestaurantDetails 
