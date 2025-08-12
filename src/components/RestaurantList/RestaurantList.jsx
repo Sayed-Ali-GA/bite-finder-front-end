@@ -12,13 +12,20 @@ const RestaurantList = ( props ) => {
             <li key={restaurant._id}>
               <span onClick={() => handleSelect(restaurant)}>
                 <Link to={`/restaurant/${restaurant._id}`}>
-                {restaurant.name}
+
+                <h2>{restaurant.name}</h2>  
+                <p>{restaurant.description}</p>
+                {restaurant.location}       
+                <p>{restaurant.ownerId?.username || "Unknown"} Posted on {restaurant.createdAt ? new Date(restaurant.createdAt).toLocaleDateString() : "Date not available"}</p>
+                
                 </Link>
               </span>
+              
               {/* <button onClick={() => handleUpdate(restaurant)}>Update</button>{" "}
               <button onClick={() => handleDelete(restaurant._id)}>Delete</button>{" "} */}
 
-              <Link to={`/restaurant/${restaurant._id}/menu`}>Menu</Link>
+              {/* <Link to={`/restaurant/${restaurant._id}/menu`}>Menu</Link> */}
+
             </li>
           ))
         ) : (
