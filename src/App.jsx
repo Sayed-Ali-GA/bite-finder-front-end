@@ -92,6 +92,15 @@ const App = () => {
   const handleAddRestaurant = async (formData)=>{
     await restaurantService.create(formData)
   }
+    const handleUpdateRestaurant = async (formData, _id) => {
+    const updatedRestaurant = await restaurantService.update(formData, _id);
+    const updatedRestaurantList = restaurants.map((restaurant) =>
+      restaurant._id !== updatedRestaurant._id ? restaurant : updatedRestaurant
+    );
+    setPets(updatedRestaurantList);
+    setSelected(updatedRestaurant);
+  };
+
 
   const handleAddMenu = async (formData) => {
     if (!selectedRestaurant) {
