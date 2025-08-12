@@ -17,6 +17,7 @@ const RestaurantDetails = (props) => {
     const newComment = await restaurantService.createComment(formData, restaurantId)
     setRestaurant({...restaurant, comments: [...restaurant.comments, newComment]})
   }
+
   const handleDeleteComment = async (commentId) => {
   try {
     await restaurantService.deleteComment(restaurantId, commentId)
