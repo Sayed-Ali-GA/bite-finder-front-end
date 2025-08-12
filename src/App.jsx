@@ -9,7 +9,7 @@ import { useState, useEffect } from 'react'
 import MenuForm from './components/MenuForm/menuForm.jsx'
 import * as menuService from './services/menuService.js'
 import MenuDetails from './components/MenuDetails/MenuDetails.jsx'
-import RestaurantDetails from './components/RestaurantDetails /RestaurantDetails .jsx'
+import RestaurantDetails from './components/RestaurantDetails /RestaurantDetails .jsx' 
 
 import * as restaurantService from './services/restaurantService.js'
 import RestaurantForm from './components/RestaurantForm/RestaurantForm.jsx'
@@ -157,7 +157,6 @@ const App = () => {
             <Route
               path="/restaurant/new"
               element={<RestaurantForm handleAddRestaurant={handleAddRestaurant} />}
-              user={user}
             />
             <Route
               path="/restaurant/:restaurantId/menu/new"
