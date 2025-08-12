@@ -16,7 +16,10 @@ const RestaurantForm = (props)=>{
 
     const handleSubmit = (evt)=>{
     evt.preventDefault()
-    props.handleAddRestaurant(formData)
+ 
+    props.selectedRestaurant?props.handleUpdateRestaurant(formData,props.selectedRestaurant._id):(
+   props.handleAddRestaurant(formData)
+    )
     setFormData(initialState)
     }
 
