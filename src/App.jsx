@@ -210,7 +210,15 @@ const handleAddRestaurant = async (formData) => {
             <Route path="/sign-in" element={<SignIn handleSignIn={handleSignIn} user={user} />} />
           </>
         )}
-        <Route path="/" element={<h1>Hello world!</h1>} />
+        <Route path="/" element={
+          <div>
+            
+            <h1>Wlecom {user?.username||"visitor"}</h1>
+            <p>Sign up or sign in to create a restaurant or to see the list of restaurants with their details  </p>
+            
+          </div>
+          
+          } />
         <Route path="*" element={<h1>404</h1>} />
       </Routes>
     </>
