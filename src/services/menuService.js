@@ -1,17 +1,12 @@
 const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}/restaurant`;
 
-const index = async (restaurantId) => {
+const indexByRestaurant = async (restaurantId) => {
     try {
-        const token = localStorage.getItem('token');
-        const res = await fetch(`${BASE_URL}/${restaurantId}/menu`, {
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`,
-            },
-        });
+        const res = await fetch(`${BASE_URL}/${restaurantId}/menu`);
         return res.json();
     } catch (err) {
-        console.error('Error fetching menu:', err);
+        console.log('Error fetching menus:', err);
+
     }
 };
 
@@ -20,7 +15,7 @@ const create = async (restaurantId, formData) => {
         const token = localStorage.getItem('token');
         const res = await fetch(`${BASE_URL}/${restaurantId}/menu`, {
             method: 'POST',
-            headers: { 
+            headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
@@ -37,7 +32,7 @@ const update = async (restaurantId, formData, menuId) => {
         const token = localStorage.getItem('token');
         const res = await fetch(`${BASE_URL}/${restaurantId}/menu/${menuId}`, {
             method: 'PUT',
-            headers: { 
+            headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
@@ -49,7 +44,7 @@ const update = async (restaurantId, formData, menuId) => {
     }
 };
 
-const deleteMenu = async (restaurantId,menuId) => {
+const deleteMenu = async (restaurantId, menuId) => {
     try {
         const token = localStorage.getItem('token');
         const res = await fetch(`${BASE_URL}/${restaurantId}/menu/${menuId}`, {
@@ -65,7 +60,7 @@ const deleteMenu = async (restaurantId,menuId) => {
 };
 
 export {
-    index,
+    indexByRestaurant,
     create,
     update,
     deleteMenu,
