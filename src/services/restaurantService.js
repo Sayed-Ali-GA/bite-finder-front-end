@@ -72,6 +72,23 @@ const deleteRestaurant = async (restaurantId) => {
     console.log(err)
   }
 }
+
+const deleteComment = async (restaurantId , commentId) => {
+  try{
+      const token = localStorage.getItem('token')
+    const res = await fetch(`${BASE_URL}/${restaurantId}/comments/${commentId}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+  }
+   catch (err) {
+    console.log(err)
+  }
+}
+
+
 const update = async (formData, restaurantId) => {
   try {
     const token = localStorage.getItem('token')
@@ -96,4 +113,5 @@ export {
   createComment,
   deleteRestaurant,
   update,
+  deleteComment,
 }

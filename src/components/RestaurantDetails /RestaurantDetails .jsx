@@ -24,6 +24,19 @@ const RestaurantDetails = (props) => {
     setRestaurant({...restaurant, comments: [...restaurant.comments, newComment]})
   }
 
+  const handleDeleteComment = async (commentId) => {
+  try {
+    await restaurantService.deleteComment(restaurantId, commentId)
+    setRestaurant(prev => ({
+      ...prev,
+      comments: prev.comments.filter(c => c._id !== commentId)
+    }))
+  } catch (error) {
+    console.error("Failed to delete comment", error)
+  }
+}
+
+
   if(!restaurant) return <main>Loading.....</main>
 
 
@@ -56,6 +69,8 @@ const RestaurantDetails = (props) => {
 
             {restaurant.comments.map((comment) => (
                  <div key={comment._id}>
+                     <button onClick={() => handleDeleteComment(comment._id)}>Delete {comment.content}</button>
+                     
                      <p>{comment.authorId.username}: {comment.content}</p>
                  </div>
             ))}
