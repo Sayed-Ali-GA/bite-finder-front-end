@@ -1,13 +1,15 @@
 const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}/restaurant`;
 
 const indexByRestaurant = async (restaurantId) => {
-    try {
-        const res = await fetch(`${BASE_URL}/${restaurantId}/menu`);
-        return res.json();
-    } catch (err) {
-        console.log('Error fetching menus:', err);
-
-    }
+  try {
+    const token = localStorage.getItem("token");
+    const res = await fetch(`${BASE_URL}/${restaurantId}/menu`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    return res.json();
+  } catch (err) {
+    console.log('Error fetching menus:', err);
+  }
 };
 
 const create = async (restaurantId, formData) => {

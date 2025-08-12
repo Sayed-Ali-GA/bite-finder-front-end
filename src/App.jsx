@@ -32,7 +32,7 @@ const App = () => {
 
   useEffect(() => {
     const fetchMenus = async () => {
-      if (!selectedRestaurant) return; 
+      if (!selectedRestaurant) return;
       try {
         const data = await menuService.index(selectedRestaurant._id)
         setMenus(data)
@@ -74,15 +74,15 @@ const App = () => {
     setUser(res)
   }
 
-  const handleAddRestaurant = async (formData)=>{
+  const handleAddRestaurant = async (formData) => {
     await restaurantService.create(formData)
   }
 
   const handleAddMenu = async (formData) => {
     if (!selectedRestaurant) {
-    console.error('No restaurant selected')
-    return
-  }
+      console.error('No restaurant selected')
+      return
+    }
     try {
       const newMenu = await menuService.create(selectedRestaurant._id, formData)
       setMenus([newMenu, ...menus])
@@ -94,8 +94,9 @@ const App = () => {
 
   const handleUpdateMenu = async (formData, menuId) => {
     if (!selectedRestaurant) {
-    console.error('No restaurant selected')
-    return }
+      console.error('No restaurant selected')
+      return
+    }
     try {
       const updatedMenu = await menuService.update(selectedRestaurant._id, formData, menuId)
       const newMenuList = menus.map((menu) =>
@@ -109,21 +110,21 @@ const App = () => {
     }
   }
 
- const handleDeleteMenu = async (menuId) => {
-  try {
-    const deletedMenu = await menuService.deleteMenu(menuId);
+  const handleDeleteMenu = async (menuId) => {
+    try {
+      const deletedMenu = await menuService.deleteMenu(menuId);
 
-    if (deletedMenu.err) throw new Error(deletedMenu.err);
+      if (deletedMenu.err) throw new Error(deletedMenu.err);
 
-    setMenus(prevMenus =>
-      prevMenus.filter(menu => menu._id !== deletedMenu._id)
-    );
+      setMenus(prevMenus =>
+        prevMenus.filter(menu => menu._id !== deletedMenu._id)
+      );
 
-    setSelectedMenu(null); 
-  } catch (err) {
-    console.error("Error deleting menu:", err);
-  }
-};
+      setSelectedMenu(null);
+    } catch (err) {
+      console.error("Error deleting menu:", err);
+    }
+  };
 
   const handleDeleterestaurant = async (restaurantId) => {
     await restaurantService.deleteRestaurant(restaurantId)
@@ -143,10 +144,20 @@ const App = () => {
                 restaurants={restaurants}
                 handleSelect={handleRestaurantSelect}
               />} />
-            <Route path='/restaurant' element={<RestaurantList restaurants={restaurants} handleSelect={handleRestaurantSelect}/>}  />
-            <Route path='/restaurant/new' element={<RestaurantForm handleAddRestaurant={handleAddRestaurant}/>} user={user}  />
+            <Route path='/restaurant' element={<RestaurantList restaurants={restaurants} handleSelect={handleRestaurantSelect} />} />
+            <Route path='/restaurant/new' element={<RestaurantForm handleAddRestaurant={handleAddRestaurant} />} user={user} />
+            <Route path='/restaurant/:restaurantId' element={<RestaurantDetails user={user} />} />
+
             <Route
-              path="/restaurant/restaurantId/menu/new"
+              path="/restaurant/:restaurantId/menu"
+              element={
+                <MenuDetails
+                  handleAddMenu={handleAddMenu}
+                  handleUpdateMenu={handleUpdateMenu}
+                  selected={selectedMenu} />}
+            />
+            <Route
+              path="/restaurant/:restaurantId/menu/new"
               element={
                 <MenuForm
                   handleAddMenu={handleAddMenu}
@@ -155,22 +166,8 @@ const App = () => {
                 />
               }
             />
-
-            <Route path='/restaurant/:restaurantId' element={<RestaurantDetails user={user} />} />
-            <Route
-              path="/restaurant/:restaurantId/menu/menuId"
-              element={
-                <MenuDetails
-                  menus={menus}
-                  handleAddMenu={handleAddMenu}
-                  handleDeleteMenu={handleDeleteMenu}
-                  selected={selectedMenu}
-                  user={user}
-                />
-              }
-            />
-
           </>
+
         ) : (
           <>
             {/* Public Routes */}
@@ -182,7 +179,7 @@ const App = () => {
         <Route path='/' element={<h1>Hello world!</h1>} />
         <Route path='*' element={<h1>404</h1>} />
 
-      </Routes>
+      </Routes >
     </>
   )
 }
