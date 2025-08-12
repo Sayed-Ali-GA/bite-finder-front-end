@@ -11,7 +11,9 @@ const RestaurantList = ( props ) => {
           restaurants.map((restaurant) => (
             <li key={restaurant._id}>
               <span onClick={() => handleSelect(restaurant)}>
+                <Link to={`/restaurant/${restaurant._id}`}>
                 {restaurant.name}
+                </Link>
               </span>
               {/* <button onClick={() => handleUpdate(restaurant)}>Update</button>{" "}
               <button onClick={() => handleDelete(restaurant._id)}>Delete</button>{" "} */}

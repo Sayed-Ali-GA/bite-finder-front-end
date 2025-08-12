@@ -1,5 +1,4 @@
 const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}/restaurant`
-
 const index = async () => {
   try {
     const token = localStorage.getItem('token')
@@ -14,7 +13,6 @@ const index = async () => {
     console.log(err)
   }
 }
-
 const show = async (restaurantId) => {
   try {
     const token = localStorage.getItem('token')
@@ -29,7 +27,6 @@ const show = async (restaurantId) => {
     console.log(err)
   }
 }
-
 const create = async (formData) => {
   try {
     const token = localStorage.getItem('token')
@@ -47,7 +44,6 @@ const create = async (formData) => {
     console.log(err)
   }
 }
-
 const createComment = async (formData, restaurantId) => {
   const token = localStorage.getItem('token')
   const res = await fetch(`${BASE_URL}/${restaurantId}/comments`, {
@@ -61,7 +57,6 @@ const createComment = async (formData, restaurantId) => {
   const data = await res.json()
   return data
 }
-
 const deleteRestaurant = async (restaurantId) => {
   try {
     const token = localStorage.getItem('token')
@@ -77,7 +72,6 @@ const deleteRestaurant = async (restaurantId) => {
     console.log(err)
   }
 }
-
 const update = async (formData, restaurantId) => {
   try {
     const token = localStorage.getItem('token')
@@ -95,7 +89,6 @@ const update = async (formData, restaurantId) => {
     console.log(err)
   }
 }
-
 export {
   index,
   show,
