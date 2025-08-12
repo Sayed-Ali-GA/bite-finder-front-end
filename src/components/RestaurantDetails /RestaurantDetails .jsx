@@ -14,7 +14,7 @@ const RestaurantDetails = (props) => {
     useEffect (() => {
           const fetchRestaurant = async () => {
              const restaurantData = await restaurantService.show(restaurantId)
-             setRestaurant(restaurantId) 
+             setRestaurant(restaurantData) 
           }
         fetchRestaurant()  
     }, [restaurantId])
