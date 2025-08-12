@@ -29,6 +29,14 @@ const App = () => {
   const [selectedMenu, setSelectedMenu] = useState(null)
 
 
+  useEffect(()=>{
+        const fetchAllRestaurants = async ()=>{
+          const restauarntsData = await restaurantService.index()
+          setRestaurants(restauarntsData)
+        }
+        fetchAllRestaurants()
+    },[])
+
   useEffect(() => {
     const fetchMenus = async () => {
       if (!selectedRestaurant) return; 

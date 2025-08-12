@@ -4,7 +4,7 @@ import * as restaurantService from '../../services/restaurantService'
 
 
 const CommentForm = (props) => {
-  const initialState = { text: '' }
+  const initialState = { content: '' }
 	const [formData, setFormData] = useState(initialState)
 
 	const handleChange = (evt) => {
@@ -14,17 +14,17 @@ const CommentForm = (props) => {
     const handleSubmit = (evt) => {
 		evt.preventDefault()
 		props.handleAddComment(formData)
-		setFormData({ text: '' })
+		setFormData({ content: '' })
 	}
 
     return (
 		<form className="comment-form" onSubmit={handleSubmit}>
-  <label htmlFor="text-input">Your comment:</label>
+  <label htmlFor="content">Your comment:</label>
   <textarea
     required
-    name="text"
-    id="text-input"
-    value={formData.text}
+    name="content"
+    id="content"
+    value={formData.content}
     onChange={handleChange}
   />
   <button className="btn" type="submit">SUBMIT COMMENT</button>
@@ -33,4 +33,4 @@ const CommentForm = (props) => {
 	)
 }
 
-export default CommentForm
+export default CommentForm 
