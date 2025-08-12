@@ -29,6 +29,21 @@ const App = () => {
   const [menus, setMenus] = useState([])
   const [selectedMenu, setSelectedMenu] = useState(null)
 
+      useEffect(()=>{
+        const fetchAllRestaurants = async ()=>{
+          const restauarntsData = await restaurantService.index()
+          setRestaurants(restauarntsData)
+        }
+        fetchAllRestaurants()
+    },[])
+
+  useEffect(()=>{
+        const fetchAllRestaurants = async ()=>{
+          const restauarntsData = await restaurantService.index()
+          setRestaurants(restauarntsData)
+        }
+        fetchAllRestaurants()
+    },[])
 
   useEffect(() => {
     const fetchMenus = async () => {
@@ -127,7 +142,7 @@ const App = () => {
 
   const handleDeleterestaurant = async (restaurantId) => {
     await restaurantService.deleteRestaurant(restaurantId)
-    setRestaurant(restaurant.filter(restaurant => restaurant._id !== restaurantId))
+    setRestaurants(restaurants.filter(restaurant => restaurant._id !== restaurantId))
     navigate('/restaurant')
   }
 
