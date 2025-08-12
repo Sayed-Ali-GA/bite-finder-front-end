@@ -34,20 +34,20 @@ const RestaurantDetails = (props) => {
       
 
         <h1>{restaurant.name}</h1>
-
+        <h2>{restaurant.type}</h2>
         <p>{restaurant.ownerId?.username || "Unknown"} Posted on {restaurant.createdAt ? new Date(restaurant.createdAt).toLocaleDateString() : "Date not available"}</p>
 
 
        {restaurant.ownerId?._id === props.user?._id && (
   <div>
-    <Link to={`/restaurant/${restaurantId}/edit`}>Edit</Link>
-    <button onClick={() => props.handleDeleterestaurant(restaurantId)}>Delete</button>
+    <Link to={`/restaurant/${restaurantId}/edit`}>Edit {restaurant.name}</Link>
+    <button onClick={() => props.handleDeleterestaurant(restaurantId)}>Delete {restaurant.name}</button>
   </div>
 )}
 
 
     </header>
-    <Link to={`/restaurant/${restaurant._id}/menu`}>Menu</Link>
+    <Link to={`/restaurant/${restaurant._id}/menu`}>Menu of {restaurant.name}</Link>
     <section>
           <h2>Comments:</h2>
             <CommentForm handleAddComment={handleAddComment} />
