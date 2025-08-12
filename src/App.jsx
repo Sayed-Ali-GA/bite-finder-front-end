@@ -146,9 +146,10 @@ const App = () => {
             <Route path='/restaurant' element={<RestaurantList restaurants={restaurants} handleSelect={handleRestaurantSelect}/>}  />
             <Route path='/restaurant/new' element={<RestaurantForm handleAddRestaurant={handleAddRestaurant}/>} user={user}  />
             <Route
-              path="/restaurant/menu"
+              path="/restaurant/restaurantId/menu/new"
               element={
                 <MenuForm
+                  handleAddMenu={handleAddMenu}
                   handleUpdateMenu={handleUpdateMenu}
                   selected={selectedMenu}
                 />
