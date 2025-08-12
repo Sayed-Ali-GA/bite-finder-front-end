@@ -180,7 +180,7 @@ const App = () => {
               }
             />
 
-            <Route path='/restaurant/:restaurantId' element={<RestaurantDetails user={user} />} />
+            <Route path='/restaurant/:restaurantId' element={<RestaurantDetails user={user} handleDeleterestaurant={handleDeleterestaurant}/>} />
             <Route
               path="/restaurant/:restaurantId/menu/menuId"
               element={
