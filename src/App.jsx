@@ -29,27 +29,27 @@ const App = () => {
   const [menus, setMenus] = useState([])
   const [selectedMenu, setSelectedMenu] = useState(null)
 
-      useEffect(()=>{
-        const fetchAllRestaurants = async ()=>{
-          const restauarntsData = await restaurantService.index()
-          setRestaurants(restauarntsData)
-        }
-        fetchAllRestaurants()
-    },[])
+  useEffect(() => {
+    const fetchAllRestaurants = async () => {
+      const restauarntsData = await restaurantService.index()
+      setRestaurants(restauarntsData)
+    }
+    fetchAllRestaurants()
+  }, [])
 
-  useEffect(()=>{
-        const fetchAllRestaurants = async ()=>{
-          const restauarntsData = await restaurantService.index()
-          setRestaurants(restauarntsData)
-        }
-        fetchAllRestaurants()
-    },[])
+  useEffect(() => {
+    const fetchAllRestaurants = async () => {
+      const restauarntsData = await restaurantService.index()
+      setRestaurants(restauarntsData)
+    }
+    fetchAllRestaurants()
+  }, [])
 
   useEffect(() => {
     const fetchMenus = async () => {
       if (!selectedRestaurant) return;
       try {
-        const data = await menuService.index(selectedRestaurant._id)
+        const data = await menuService.indexByRestaurant(selectedRestaurant._id)
         setMenus(data)
       } catch (err) {
         console.log('Error loading menus:', err)
@@ -95,51 +95,46 @@ const App = () => {
 
   const handleAddMenu = async (formData) => {
     if (!selectedRestaurant) {
-      console.error('No restaurant selected')
-      return
+      console.error('No restaurant selected');
+      return;
     }
     try {
-      const newMenu = await menuService.create(selectedRestaurant._id, formData)
-      setMenus([newMenu, ...menus])
-      navigate(`/restaurant/${selectedRestaurant._id}/menu`)
+      const newMenu = await menuService.create(selectedRestaurant._id, formData);
+      setMenus(prevMenus => [newMenu, ...prevMenus]); 
+      navigate(`/restaurant/${selectedRestaurant._id}/menu`);
     } catch (err) {
-      console.log('Error adding menu:', err)
-    }
-  }
-
-  const handleUpdateMenu = async (formData, menuId) => {
-    if (!selectedRestaurant) {
-      console.error('No restaurant selected')
-      return
-    }
-    try {
-      const updatedMenu = await menuService.update(selectedRestaurant._id, formData, menuId)
-      const newMenuList = menus.map((menu) =>
-        menu._id === updatedMenu._id ? updatedMenu : menu
-      )
-      setMenus(newMenuList)
-      setSelectedMenu(null)
-      navigate(`/restaurant/${selectedRestaurant._id}/menu`)
-    } catch (err) {
-      console.log('Error updating menu:', err)
-    }
-  }
-
-  const handleDeleteMenu = async (menuId) => {
-    try {
-      const deletedMenu = await menuService.deleteMenu(menuId);
-
-      if (deletedMenu.err) throw new Error(deletedMenu.err);
-
-      setMenus(prevMenus =>
-        prevMenus.filter(menu => menu._id !== deletedMenu._id)
-      );
-
-      setSelectedMenu(null);
-    } catch (err) {
-      console.error("Error deleting menu:", err);
+      console.log('Error adding menu:', err);
     }
   };
+
+const handleUpdateMenu = async (formData, menuId) => {
+  if (!selectedRestaurant) {
+    console.error('No restaurant selected');
+    return;
+  }
+  try {
+    const updatedMenu = await menuService.update(selectedRestaurant._id, menuId, formData);
+    const newMenuList = menus.map(menu =>
+      menu._id === updatedMenu._id ? updatedMenu : menu
+    );
+    setMenus(newMenuList);
+    setSelectedMenu(null);
+    navigate(`/restaurant/${selectedRestaurant._id}/menu`);
+  } catch (err) {
+    console.log('Error updating menu:', err);
+  }
+};
+
+const handleDeleteMenu = async (restaurantId, menuId) => {
+  try {
+    const deletedMenu = await menuService.deleteMenu(restaurantId, menuId);
+    setMenus(prevMenus => prevMenus.filter(menu => menu._id !== deletedMenu._id));
+    setSelectedMenu(null); 
+  } catch (err) {
+    console.error("Error deleting menu:", err);
+  }
+};
+
 
   const handleDeleterestaurant = async (restaurantId) => {
     await restaurantService.deleteRestaurant(restaurantId)
@@ -167,14 +162,18 @@ const App = () => {
               path="/restaurant/:restaurantId/menu"
               element={
                 <MenuDetails
+                  menus={menus}
+                  setMenus={setMenus}
+                  handleDeleteMenu={handleDeleteMenu}
                   handleAddMenu={handleAddMenu}
-                  handleUpdateMenu={handleUpdateMenu}
-                  selected={selectedMenu} />}
-            />
+                  user={user}
+                />} />
             <Route
               path="/restaurant/:restaurantId/menu/new"
               element={
                 <MenuForm
+                  user={user}
+                  setMenus={setMenus}
                   handleAddMenu={handleAddMenu}
                   handleUpdateMenu={handleUpdateMenu}
                   selected={selectedMenu}
