@@ -25,6 +25,7 @@ const RestaurantDetails = (props) => {
     });
   };
 
+  // *** KEEPING THE DELETE COMMENT FROM FIRST CODE AS REQUESTED ***
   const handleDeleteComment = async (commentId) => {
     try {
       await restaurantService.deleteComment(restaurantId, commentId);
@@ -90,6 +91,5 @@ const RestaurantDetails = (props) => {
     </main>
   );
 };
-// a commit
 
 export default RestaurantDetails;
