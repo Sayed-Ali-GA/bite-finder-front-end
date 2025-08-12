@@ -8,6 +8,7 @@ import * as authService from './services/authService.js'
 import { useState, useEffect } from 'react'
 import MenuForm from './components/MenuForm/menuForm.jsx'
 import * as menuService from './services/menuService.js'
+import MenuDetails from './components/MenuDetails/MenuDetails.jsx'
 import RestaurantDetails from './components/RestaurantDetails /RestaurantDetails .jsx'
 
 import * as restaurantService from './services/restaurantService.js'
@@ -108,6 +109,22 @@ const App = () => {
     }
   }
 
+ const handleDeleteMenu = async (menuId) => {
+  try {
+    const deletedMenu = await menuService.deleteMenu(menuId);
+
+    if (deletedMenu.err) throw new Error(deletedMenu.err);
+
+    setMenus(prevMenus =>
+      prevMenus.filter(menu => menu._id !== deletedMenu._id)
+    );
+
+    setSelectedMenu(null); 
+  } catch (err) {
+    console.error("Error deleting menu:", err);
+  }
+};
+
   const handleDeleterestaurant = async (restaurantId) => {
     await restaurantService.deleteRestaurant(restaurantId)
     setRestaurant(restaurant.filter(restaurant => restaurant._id !== restaurantId))
@@ -132,7 +149,6 @@ const App = () => {
               path="/restaurant/menu"
               element={
                 <MenuForm
-                  handleAddMenu={handleAddMenu}
                   handleUpdateMenu={handleUpdateMenu}
                   selected={selectedMenu}
                 />
@@ -140,6 +156,18 @@ const App = () => {
             />
 
             <Route path='/restaurant/:restaurantId' element={<RestaurantDetails user={user} />} />
+            <Route
+              path="/restaurant/:restaurantId/menu/menuId"
+              element={
+                <MenuDetails
+                  menus={menus}
+                  handleAddMenu={handleAddMenu}
+                  handleDeleteMenu={handleDeleteMenu}
+                  selected={selectedMenu}
+                  user={user}
+                />
+              }
+            />
 
           </>
         ) : (
