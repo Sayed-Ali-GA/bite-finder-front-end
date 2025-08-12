@@ -1,41 +1,46 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import * as menuService from "../../services/menuService";
 
-const MenuForm = ({ setMenus }) => {
+const MenuForm = ({ handleAddMenu, handleUpdateMenu, user, restaurant }) => {
     const { restaurantId, menuId } = useParams();
     const navigate = useNavigate();
 
-    const [formData, setFormData] = useState({
-        title: "",
+    const initialState = {
+        name: "",
         description: "",
         price: "",
         type: "main",
-    });
+    };
 
-    useEffect(() => {
-        async function fetchMenu() {
-            if (menuId) {
-                try {
-                    const menu = await menuService.show(restaurantId, menuId);
-                    setFormData({
-                        title: menu.title || "",
-                        description: menu.description || "",
-                        price: menu.price || "",
-                        type: menu.type || "main",
-                    });
-                } catch (err) {
-                    console.error("Failed to fetch menu", err);
-                    navigate(`/restaurant/${restaurantId}/menu`);
-                }
-            }
-        }
-        fetchMenu();
-    }, [menuId, restaurantId, navigate]);
+    const [formData, setFormData] = useState(initialState);
+
+ useEffect(() => {
+  const fetchMenu = async () => {
+    if (!menuId) return;
+
+    try {
+      const menus = await menuService.indexByRestaurant(restaurantId);
+      const menu = menus.find(item => item._id === menuId);
+      if (menu) {
+        setFormData({
+          name: menu.name || "",
+          description: menu.description || "",
+          price: menu.price || "",
+          type: menu.type || "main",
+        });
+      }
+    } catch (err) {
+      console.error("Failed to load menu:", err);
+    }
+  };
+  fetchMenu();
+}, [menuId, restaurantId]);
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
+        setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
     const handleSubmit = async (e) => {
@@ -43,71 +48,75 @@ const MenuForm = ({ setMenus }) => {
 
         try {
             if (menuId) {
-                const updatedMenu = await menuService.update(restaurantId, menuId, formData);
-                setMenus(menus => menus.map(menu => (menu._id === updatedMenu._id ? updatedMenu : menu)));
+                await handleUpdateMenu(formData, menuId);
             } else {
-                const newMenu = await menuService.create(restaurantId, formData);
-                setMenus(menus => [newMenu, ...menus]);
+                await handleAddMenu(formData);
             }
-            navigate(`/restaurant/${restaurantId}/menu`);
+
+            setFormData(initialState)
         } catch (error) {
-            console.error("Error saving menu:", error);
+            console.error("Error submitting form:", error);
         }
     };
+    const isOwner = restaurant?.ownerId?._id === user?._id;
+
 
     return (
-        <form onSubmit={handleSubmit} className="menu-form">
-            <h2>{menuId ? "Edit Menu" : "Add New Menu"}</h2>
+        <>
+            {isOwner ? (
+                <>
+                    <h1>{menuId ? "Edit Menu" : "Add Menu"}</h1>
+                    <form onSubmit={handleSubmit}>
+                        <label htmlFor="name">Title:</label>
+                        <input
+                            id="name"
+                            name="name"
+                            value={formData.name}
+                            onChange={handleChange}
+                            required
+                        />
 
+                        <label htmlFor="description">Description:</label>
+                        <textarea
+                            id="description"
+                            name="description"
+                            value={formData.description}
+                            onChange={handleChange}
+                            required
+                        />
 
-            <label htmlFor="name">Title:</label>
-            <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-            />
+                        <label htmlFor="price">Price:</label>
+                        <input
+                            type="number"
+                            id="price"
+                            min="0"
+                            step="0.01"
+                            name="price"
+                            value={formData.price}
+                            onChange={handleChange}
+                            required
+                        />
 
-            <label htmlFor="description">
-                Description:
-            </label>
-            <textarea
-                name="description"
-                value={formData.description}
-                onChange={handleChange}
-                required
-            />
+                        <label htmlFor="type">Type:</label>
+                        <select
+                            id="type"
+                            name="type"
+                            value={formData.type}
+                            onChange={handleChange}
+                            required
+                        >
+                            <option value="main">Main Course</option>
+                            <option value="dessert">Dessert</option>
+                            <option value="drinks">Drinks</option>
+                        </select>
 
-            <label htmlFor="price">
-                Price:
-            </label>
-            <input
-                type="number"
-                min="0"
-                step="0.01"
-                name="price"
-                value={formData.price}
-                onChange={handleChange}
-                required
-            />
-
-            <label htmlFor="type">
-                Type:
-            </label>
-            <select
-                name="type"
-                value={formData.type}
-                onChange={handleChange}
-            >
-                <option value="main">Main Course</option>
-                <option value="dessert">Dessert</option>
-                <option value="drinks">Drinks</option>
-            </select>
-
-
-            <button type="submit">{menuId ? "Update" : "Add"}</button>
-        </form>
+                        <button type="submit">{menuId ? "Update Menu" : "Add Menu"}</button>
+                    </form>
+                </>
+            ) : (
+                <p>You are not authorized to add or edit this menu.</p>
+            )}
+        </>
     );
 };
 

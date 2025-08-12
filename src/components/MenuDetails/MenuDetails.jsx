@@ -1,81 +1,119 @@
-import { Link, useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import * as menuService from "../../services/menuService";
+import * as restaurantService from "../../services/restaurantService";
 
-const MenuDetails = ({ menus = [], handleDeleteMenu, user }) => {
-    const { restaurantId } = useParams();
+const MenuDetails = ({ menus, setMenus, handleDeleteMenu, user }) => {
 
-    if (!Array.isArray(menus)) {
-        console.error("menus prop is not an array:", menus);
-        return <p>Error loading menus.</p>;
-    }
+  const { restaurantId } = useParams();
+  const [restaurant, setRestaurant] = useState(null);
 
-    const mainCourse = menus.filter(menu => menu.type === "main");
-    const drinks = menus.filter(menu => menu.type === "drinks");
-    const dessert = menus.filter(menu => menu.type === "dessert");
+  useEffect(() => {
+    const fetchMenus = async () => {
+      try {
+        const data = await menuService.indexByRestaurant(restaurantId);
+        setMenus(data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchMenus();
+  }, [restaurantId]);
 
-    return (
-        <main className="menu-details">
-            <Link to={`/restaurant/${restaurantId}/menu/new`}>Add New Menu Item</Link>
+  useEffect(() => {
+    const fetchRestaurant = async () => {
+      try {
+        const data = await restaurantService.show(restaurantId);
+        setRestaurant(data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchRestaurant();
+  }, [restaurantId]);
 
-            {mainCourse.length > 0 && (
+  const mainCourse = menus.filter((menu) => menu.type === "main");
+  const drinks = menus.filter((menu) => menu.type === "drinks");
+  const dessert = menus.filter((menu) => menu.type === "dessert");
+
+  if (!restaurant) return <main>Loading restaurant data...</main>;
+
+  const isOwner = restaurant.ownerId?._id === user?._id;
+
+  return (
+    <main>
+      <Link to={`/restaurant/${restaurantId}/menu/new`}>Add New Menu</Link>
+
+      {mainCourse.length > 0 && (
+        <>
+          <h2>Main Course</h2>
+          {mainCourse.map((menu) => (
+            <div key={menu._id}>
+              <div>
+                <strong>{menu.name}</strong> - {menu.price} BD 
+              </div>
+              <div style={{ fontSize: "small" }}>{menu.description}</div>
+
+              {isOwner && (
                 <>
-                    <h2>Main Course</h2>
-                    <ul>
-                        {mainCourse.map(menu => (
-                            <li key={menu._id}>
-                                <strong>{menu.name || "No Title"}</strong> - {menu.description || "No Description"} - {menu.price ?? "N/A"} BD
-                                {user && menu.creatorId === user._id && (
-                                    <div>
-                                        <button onClick={() => handleDeleteMenu(restaurantId, menu._id)}>Delete</button>
-                                        <Link to={`/restaurant/${restaurantId}/menu/${menu._id}`}>Edit</Link>
-                                    </div>
-                                )}
-                            </li>
-                        ))}
-                    </ul>
+                  <button onClick={() => handleDeleteMenu(restaurantId, menu._id)}>Delete</button>
+                  <Link to={`/restaurant/${restaurantId}/menu/${menu._id}/edit`}>
+                    Edit
+                  </Link>
                 </>
-            )}
+              )}
+            </div>
+          ))}
+        </>
+      )}
 
-            {dessert.length > 0 && (
+      {dessert.length > 0 && (
+        <>
+          <h2>Dessert</h2>
+          {dessert.map((menu) => (
+            <div key={menu._id}>
+              <div>
+                <strong>{menu.name}</strong> - {menu.price} BD 
+              </div>
+              <div style={{ fontSize: "small" }}>{menu.description}</div>
+
+              {isOwner && (
                 <>
-                    <h2>Dessert</h2>
-                    <ul>
-                        {dessert.map(menu => (
-                            <li key={menu._id}>
-                                <strong>{menu.name || "No Title"}</strong> - {menu.description || "No Description"} - {menu.price ?? "N/A"} BD
-                                {user && menu.creatorId === user._id && (
-                                    <div>
-                                        <button onClick={() => handleDeleteMenu(restaurantId, menu._id)}>Delete</button>
-                                        <Link to={`/restaurant/${restaurantId}/menu/${menu._id}`}>Edit</Link>
-                                    </div>
-                                )}
-                            </li>
-                        ))}
-                    </ul>
+                  <button onClick={() => handleDeleteMenu(restaurantId, menu._id)}>Delete</button>
+                  <Link to={`/restaurant/${restaurantId}/menu/${menu._id}/edit`}>
+                    Edit
+                  </Link>
                 </>
-            )}
+              )}
+            </div>
+          ))}
+        </>
+      )}
 
-            {drinks.length > 0 && (
+      {drinks.length > 0 && (
+        <>
+          <h2>Drinks</h2>
+          {drinks.map((menu) => (
+            <div key={menu._id}>
+              <div>
+                <strong>{menu.name}</strong> - {menu.price} BD 
+              </div>
+              <div style={{ fontSize: "small" }}>{menu.description}</div>
+
+              {isOwner && (
                 <>
-                    <h2>Drinks</h2>
-                    <ul>
-                        {drinks.map(menu => (
-                            <li key={menu._id}>
-                                <strong>{menu.name || "No Title"}</strong> - {menu.description || "No Description"} - {menu.price ?? "N/A"} BD
-                                {user && menu.creatorId === user._id && (
-                                    <div>
-                                        <button onClick={() => handleDeleteMenu(restaurantId, menu._id)}>Delete</button>
-                                        <Link to={`/restaurant/${restaurantId}/menu/${menu._id}`}>Edit</Link>
-                                    </div>
-                                )}
-                            </li>
-                        ))}
-                    </ul>
+                  <button onClick={() => handleDeleteMenu(restaurantId, menu._id)}>Delete</button>
+                  <Link to={`/restaurant/${restaurantId}/menu/${menu._id}/edit`}>
+                    Edit
+                  </Link>
                 </>
-            )}
-
-            {menus.length === 0 && <p>No menus found for this restaurant.</p>}
-        </main>
-    );
+              )}
+            </div>
+          ))}
+        </>
+      )}
+    </main>
+  );
 };
 
 export default MenuDetails;

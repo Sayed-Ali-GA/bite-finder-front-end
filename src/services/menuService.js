@@ -13,18 +13,25 @@ const indexByRestaurant = async (restaurantId) => {
 };
 
 const create = async (restaurantId, menuData) => {
-    const token = localStorage.getItem('token');
-    const res = await fetch(`${BASE_URL}/${restaurantId}/menu/new`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify(menuData),
-    });
+    try {
+        const token = localStorage.getItem('token');
+        const res = await fetch(`${BASE_URL}/${restaurantId}/menu/new`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify(menuData),
+        });
 
-    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-    return res.json();
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+
+        const newMenuItem = await res.json();
+        return newMenuItem;
+    } catch (err) {
+        console.error('Error creating menu:', err);
+        throw err;
+    }
 };
 
 const show = async (restaurantId, menuId) => {
@@ -34,11 +41,17 @@ const show = async (restaurantId, menuId) => {
             headers: { Authorization: `Bearer ${token}` }
         });
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-        return res.json();
+        const menus = await res.json();
+
+        const menu = menus.find(item => item._id === menuId);
+        if (!menu) throw new Error('Menu not found');
+
+        return menu;
     } catch (err) {
         console.error('Error fetching menu:', err);
     }
 };
+
 
 const update = async (restaurantId, menuId, formData) => {
     try {
@@ -61,20 +74,22 @@ const update = async (restaurantId, menuId, formData) => {
 
 const deleteMenu = async (restaurantId, menuId) => {
     try {
-        const token = localStorage.getItem('token')
+        const token = localStorage.getItem('token');
+        if (!token) throw new Error('No auth token found');
+
         const res = await fetch(`${BASE_URL}/${restaurantId}/menu/${menuId}`, {
             method: 'DELETE',
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        })
-        const data = await res.json()
-        return data
+            headers: { Authorization: `Bearer ${token}` },
+        });
 
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+        return await res.json();
     } catch (err) {
         console.error('Error deleting menu:', err);
+        throw err;
     }
 };
+
 
 export {
     indexByRestaurant,

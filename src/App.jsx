@@ -7,6 +7,7 @@ import * as authService from './services/authService.js'
 
 import { useState, useEffect } from 'react'
 import MenuForm from './components/MenuForm/menuForm.jsx'
+
 import * as menuService from './services/menuService.js'
 import MenuDetails from './components/MenuDetails/MenuDetails.jsx'
 import RestaurantDetails from './components/RestaurantDetails /RestaurantDetails .jsx'
@@ -14,8 +15,6 @@ import RestaurantDetails from './components/RestaurantDetails /RestaurantDetails
 import * as restaurantService from './services/restaurantService.js'
 import RestaurantForm from './components/RestaurantForm/RestaurantForm.jsx'
 import RestaurantList from './components/RestaurantList/RestaurantList.jsx'
-
-
 
 
 const App = () => {
@@ -100,40 +99,45 @@ const App = () => {
     }
     try {
       const newMenu = await menuService.create(selectedRestaurant._id, formData);
-      setMenus(prevMenus => [newMenu, ...prevMenus]); 
+      const newMenus = Array.isArray(newMenu) ? newMenu : [newMenu]
+      setMenus(prevMenus => [...prevMenus, ...newMenus]);
       navigate(`/restaurant/${selectedRestaurant._id}/menu`);
     } catch (err) {
       console.log('Error adding menu:', err);
     }
   };
 
-const handleUpdateMenu = async (formData, menuId) => {
-  if (!selectedRestaurant) {
-    console.error('No restaurant selected');
-    return;
-  }
-  try {
-    const updatedMenu = await menuService.update(selectedRestaurant._id, menuId, formData);
-    const newMenuList = menus.map(menu =>
-      menu._id === updatedMenu._id ? updatedMenu : menu
-    );
-    setMenus(newMenuList);
-    setSelectedMenu(null);
-    navigate(`/restaurant/${selectedRestaurant._id}/menu`);
-  } catch (err) {
-    console.log('Error updating menu:', err);
-  }
-};
+  const handleUpdateMenu = async (formData, menuId) => {
+    try {
+      const updatedMenu = await menuService.update(selectedRestaurant._id, menuId, formData);
+      const newMenuList = menus.map(menu =>
+        menu._id === updatedMenu._id ? updatedMenu : menu
+      );
 
-const handleDeleteMenu = async (restaurantId, menuId) => {
-  try {
-    const deletedMenu = await menuService.deleteMenu(restaurantId, menuId);
-    setMenus(prevMenus => prevMenus.filter(menu => menu._id !== deletedMenu._id));
-    setSelectedMenu(null); 
-  } catch (err) {
-    console.error("Error deleting menu:", err);
-  }
-};
+      setMenus(newMenuList);
+      setSelectedMenu(updatedMenu);
+
+      navigate(`/restaurant/${selectedRestaurant._id}/menu`);
+    } catch (err) {
+      console.log('Error updating menu:', err);
+    }
+  };
+
+  const handleDeleteMenu = async (restaurantId, menuId) => {
+    console.log("Deleting menu:", { restaurantId, menuId });
+
+    try {
+      await menuService.deleteMenu(restaurantId, menuId);
+      setMenus(prevMenus =>
+        prevMenus.filter(menu => menu && menu._id !== menuId)
+      );
+      setSelectedMenu(null);
+      navigate(`/restaurant/${restaurantId}/menu`, { replace: true });
+    } catch (err) {
+      console.error("Error deleting menu:", err);
+    }
+  };
+
 
 
   const handleDeleterestaurant = async (restaurantId) => {
@@ -165,21 +169,33 @@ const handleDeleteMenu = async (restaurantId, menuId) => {
                   menus={menus}
                   setMenus={setMenus}
                   handleDeleteMenu={handleDeleteMenu}
-                  handleAddMenu={handleAddMenu}
                   user={user}
-                />} />
+                /> }
+            />
+
             <Route
               path="/restaurant/:restaurantId/menu/new"
               element={
                 <MenuForm
-                  user={user}
-                  setMenus={setMenus}
                   handleAddMenu={handleAddMenu}
                   handleUpdateMenu={handleUpdateMenu}
-                  selected={selectedMenu}
                 />
               }
             />
+
+            <Route
+              path="/restaurant/:restaurantId/menu/:menuId/edit"
+              element={
+                <MenuForm
+                  handleAddMenu={handleAddMenu}
+                  handleUpdateMenu={handleUpdateMenu}
+                  user={user}
+                  restaurant={selectedRestaurant}
+
+                />
+              }
+            />
+
           </>
 
         ) : (
