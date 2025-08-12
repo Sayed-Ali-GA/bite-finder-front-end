@@ -92,16 +92,14 @@ const App = () => {
   const handleAddRestaurant = async (formData)=>{
     await restaurantService.create(formData)
   }
-const handleUpdateRestaurant = async (formData, _id) => {
-  const updatedRestaurant = await restaurantService.update(formData, _id)
-  const updatedRestaurantList = restaurants.map((restaurant) =>
-    restaurant._id !== updatedRestaurant._id ? restaurant : updatedRestaurant
-  )
-  setRestaurants(updatedRestaurantList)
-  setSelectedRestaurant(updatedRestaurant)
-  return updatedRestaurant 
-}
-
+    const handleUpdateRestaurant = async (formData, _id) => {
+    const updatedRestaurant = await restaurantService.update(formData, _id);
+    const updatedRestaurantList = restaurants.map((restaurant) =>
+      restaurant._id !== updatedRestaurant._id ? restaurant : updatedRestaurant
+    );
+    setPets(updatedRestaurantList);
+    setSelected(updatedRestaurant);
+  };
 
 
   const handleAddMenu = async (formData) => {
@@ -182,10 +180,7 @@ const handleUpdateRestaurant = async (formData, _id) => {
               }
             />
 
-            <Route path='/restaurant/:restaurantId' element={<RestaurantDetails user={user}       handleUpdateRestaurant={handleUpdateRestaurant}
-      handleRestaurantSelect={handleRestaurantSelect}
-      handleDeleterestaurant={handleDeleterestaurant}
-/>} />
+            <Route path='/restaurant/:restaurantId' element={<RestaurantDetails user={user} handleDeleterestaurant={handleDeleterestaurant}/>} />
             <Route
               path="/restaurant/:restaurantId/menu/menuId"
               element={
@@ -198,16 +193,7 @@ const handleUpdateRestaurant = async (formData, _id) => {
                 />
               }
             />
-<Route
-  path='/restaurant/:restaurantId/edit'
-  element={
-    <RestaurantForm
-      selectedRestaurant={selectedRestaurant}
-      handleUpdateRestaurant={handleUpdateRestaurant}
-      handleAddRestaurant={handleAddRestaurant}
-    />
-  }
-/>
+
           </>
         ) : (
           <>
