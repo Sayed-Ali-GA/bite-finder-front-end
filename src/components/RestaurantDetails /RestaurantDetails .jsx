@@ -35,13 +35,13 @@ const RestaurantDetails = (props) => {
 
         <h1>{restaurant.name}</h1>
 
-        <p>{restaurant.author?.username || "Unknown"} Posted on {restaurant.createdAt ? new Date(restaurant.createdAt).toLocaleDateString() : "Date not available"}</p>
+        <p>{restaurant.ownerId?.username || "Unknown"} Posted on {restaurant.createdAt ? new Date(restaurant.createdAt).toLocaleDateString() : "Date not available"}</p>
 
 
-       {restaurant.author?._id === props.user?._id && (
+       {restaurant.ownerId?._id === props.user?._id && (
   <div>
     <Link to={`/restaurant/${restaurantId}/edit`}>Edit</Link>
-    <button onClick={() => props.handleDeleteRES(restaurantId)}>Delete</button>
+    <button onClick={() => props.handleDeleterestaurant(restaurantId)}>Delete</button>
   </div>
 )}
 
@@ -56,7 +56,7 @@ const RestaurantDetails = (props) => {
 
             {restaurant.comments.map((comment) => (
                  <div key={comment._id}>
-                     <p>{comment.content}</p>
+                     <p>{comment.authorId.username}: {comment.content}</p>
                  </div>
             ))}
     </section>

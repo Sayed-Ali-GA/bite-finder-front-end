@@ -125,7 +125,7 @@ const App = () => {
 
   const handleDeleterestaurant = async (restaurantId) => {
     await restaurantService.deleteRestaurant(restaurantId)
-    setRestaurant(restaurant.filter(restaurant => restaurant._id !== restaurantId))
+    setRestaurants(restaurants.filter(restaurant => restaurant._id !== restaurantId))
     navigate('/restaurant')
   }
 
@@ -154,7 +154,7 @@ const App = () => {
               }
             />
 
-            <Route path='/restaurant/:restaurantId' element={<RestaurantDetails user={user} />} />
+            <Route path='/restaurant/:restaurantId' element={<RestaurantDetails user={user} handleDeleterestaurant={handleDeleterestaurant}/>} />
 
           </>
         ) : (
