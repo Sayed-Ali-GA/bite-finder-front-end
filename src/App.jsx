@@ -88,8 +88,23 @@ const App = () => {
     setUser(res)
   }
 
-  const handleAddRestaurant = async (formData) => {
-    await restaurantService.create(formData)
+
+const handleAddRestaurant = async (formData) => {
+  const newRestaurant = await restaurantService.create(formData)
+  setRestaurants(prevRestaurants => [newRestaurant, ...prevRestaurants])
+  return newRestaurant
+}
+
+
+  const handleUpdateRestaurant = async (formData, _id) => {
+    const updatedRestaurant = await restaurantService.update(formData, _id)
+    const updatedRestaurantList = restaurants.map((restaurant) =>
+      restaurant._id !== updatedRestaurant._id ? restaurant : updatedRestaurant
+    )
+    setRestaurants(updatedRestaurantList)
+    setSelectedRestaurant(updatedRestaurant)
+    return updatedRestaurant
+
   }
 
   const handleAddMenu = async (formData) => {
@@ -162,7 +177,8 @@ const App = () => {
             <Route path='/restaurant/new' element={<RestaurantForm handleAddRestaurant={handleAddRestaurant} />} user={user} />
             <Route path='/restaurant/:restaurantId' element={<RestaurantDetails user={user} />} />
 
-            <Route
+   element={<RestaurantForm handleAddRestaurant={handleAddRestaurant} setSelectedRestaurant={setSelectedRestaurant} />}
+
               path="/restaurant/:restaurantId/menu"
               element={
                 <MenuDetails
@@ -171,6 +187,7 @@ const App = () => {
                   handleDeleteMenu={handleDeleteMenu}
                   user={user}
                 /> }
+
             />
 
             <Route
@@ -206,10 +223,17 @@ const App = () => {
           </>
         )}
 
-        <Route path='/' element={<h1>Hello world!</h1>} />
-        <Route path='*' element={<h1>404</h1>} />
-
-      </Routes >
+        <Route path="/" element={
+          <div>
+            
+            <h1>Wlecom {user?.username||"visitor"}</h1>
+            <p>Sign up or sign in to create a restaurant or to see the list of restaurants with their details  </p>
+            
+          </div>
+          
+          } />
+        <Route path="*" element={<h1>404</h1>} />
+      </Routes>
     </>
   )
 }

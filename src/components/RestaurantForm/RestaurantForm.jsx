@@ -23,6 +23,9 @@ const RestaurantForm = (props) => {
         description: props.selectedRestaurant.description || '',
       })
     }
+    else{
+      setFormData(initialState)
+    }
   }, [props.selectedRestaurant])
 
   const handleChange = (evt) => {
@@ -45,6 +48,7 @@ const RestaurantForm = (props) => {
         // Adding
         const newRestaurant = await props.handleAddRestaurant(formData)
         if (newRestaurant && newRestaurant._id) {
+          props.setSelectedRestaurant(newRestaurant)
           navigate(`/restaurant/${newRestaurant._id}`)
         } else {
           navigate("/") // fallback
