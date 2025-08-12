@@ -78,11 +78,12 @@ const App = () => {
     setUser(res)
   }
 
-  const handleAddRestaurant = async (formData) => {
-    const newRestaurant = await restaurantService.create(formData)
-    setRestaurants([newRestaurant, ...restaurants])
-    return newRestaurant
-  }
+const handleAddRestaurant = async (formData) => {
+  const newRestaurant = await restaurantService.create(formData)
+  setRestaurants(prevRestaurants => [newRestaurant, ...prevRestaurants])
+  return newRestaurant
+}
+
 
   const handleUpdateRestaurant = async (formData, _id) => {
     const updatedRestaurant = await restaurantService.update(formData, _id)
@@ -156,7 +157,7 @@ const App = () => {
             />
             <Route
               path="/restaurant/new"
-              element={<RestaurantForm handleAddRestaurant={handleAddRestaurant} />}
+              element={<RestaurantForm handleAddRestaurant={handleAddRestaurant} setSelectedRestaurant={setSelectedRestaurant} />}
             />
             <Route
               path="/restaurant/:restaurantId/menu/new"
