@@ -2,15 +2,12 @@ import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import * as menuService from "../../services/menuService";
 import * as restaurantService from "../../services/restaurantService";
-import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import './MenueDetails.css'
 
 const MenuDetails = ({ menus, setMenus, handleDeleteMenu, user }) => {
   const { restaurantId } = useParams();
   const [restaurant, setRestaurant] = useState(null);
+  const [activeTab, setActiveTab] = useState("Main Course");
 
   useEffect(() => {
     const fetchMenus = async () => {
@@ -36,73 +33,77 @@ const MenuDetails = ({ menus, setMenus, handleDeleteMenu, user }) => {
     fetchRestaurant();
   }, [restaurantId]);
 
+  if (!restaurant) return <main style={{color:'white', textAlign:'center', marginTop:'3rem'}}>Loading restaurant data...</main>;
+
+  const isOwner = restaurant.ownerId?._id === user?._id;
+
   const mainCourse = menus.filter((menu) => menu.type === "main");
   const drinks = menus.filter((menu) => menu.type === "drinks");
   const dessert = menus.filter((menu) => menu.type === "dessert");
 
-  if (!restaurant) return <main>Loading restaurant data...</main>;
-
-  const isOwner = restaurant.ownerId?._id === user?._id;
-
-  const renderMenuSection = (title, items) => {
-    if (!items.length) return null;
-    return (
-      <section style={{ marginBottom: "2rem" }}>
-        <h2 style={{ borderBottom: "2px solid #ff8c00", paddingBottom: "0.5rem", color: "#ff6600" }}>
-          {title}
-        </h2>
-        <Row xs={1} md={2} lg={3} className="g-4">
-          {items.map((menu) => (
-            <Col key={menu._id}>
-              <Card style={{ minHeight: "200px", boxShadow: "0 4px 10px rgba(0,0,0,0.1)" }}>
-                <Card.Body>
-                  <Card.Title>{menu.name}</Card.Title>
-                  <Card.Subtitle className="mb-2 text-muted">{menu.price} BD</Card.Subtitle>
-                  <Card.Text style={{ fontSize: "0.9rem" }}>{menu.description}</Card.Text>
-                  {isOwner && (
-                    <div className="d-flex gap-2">
-                      <Button 
-                        variant="danger" 
-                        size="sm" 
-                        onClick={() => handleDeleteMenu(restaurantId, menu._id)}
-                      >
-                        Delete
-                      </Button>
-                      <Link to={`/restaurant/${restaurantId}/menu/${menu._id}/edit`}>
-                        <Button variant="warning" size="sm">Edit</Button>
-                      </Link>
-                    </div>
-                  )}
-                </Card.Body>
-              </Card>
-            </Col>
-          ))}
-        </Row>
-      </section>
-    );
+  const renderMenuCards = (items) => {
+    if (!items.length) return <h4 className="no-menu">No items in this category!</h4>;
+    return items.map((menu) => (
+      <div key={menu._id} className="menu-card">
+        <div className="menu-field">
+          <span className="menu-label">Name:</span> {menu.name}
+        </div>
+        <div className="menu-field">
+          <span className="menu-label">Price:</span> {menu.price} BD
+        </div>
+        <div className="menu-field">
+          <span className="menu-label">Description:</span> {menu.description}
+        </div>
+        {isOwner && (
+          <div className="menu-buttons">
+            <button className="btn-delete" onClick={() => handleDeleteMenu(restaurantId, menu._id)}>Delete</button>
+            <Link to={`/restaurant/${restaurantId}/menu/${menu._id}/edit`}>
+              <button className="btn-edit">Edit</button>
+            </Link>
+          </div>
+        )}
+      </div>
+    ));
   };
 
+  const tabs = [
+    { name: "Main Course", items: mainCourse },
+    { name: "Dessert", items: dessert },
+    { name: "Drinks", items: drinks },
+  ];
+
   return (
-    <Container style={{ padding: "2rem 0" }}>
-      <header className="mb-4">
-        <h1 style={{ color: "#ff6600" }}>{restaurant.name} Menu</h1>
+    <div className="menu-details-container">
+      <header className="menu-header">
+        <h1 className="restaurant-name">{restaurant.name} Menu</h1>
         {isOwner && (
           <Link to={`/restaurant/${restaurantId}/menu/new`}>
-            <Button variant="success">Add New Menu</Button>
+            <button className="btn-add">Add New Menu</button>
           </Link>
         )}
       </header>
 
       {menus.length === 0 ? (
-        <h4 style={{ color: "#888" }}>No Menu Yet!</h4>
+        <h4 className="no-menu">No Menu Yet!</h4>
       ) : (
-        <>
-          {renderMenuSection("Main Course", mainCourse)}
-          {renderMenuSection("Dessert", dessert)}
-          {renderMenuSection("Drinks", drinks)}
-        </>
+        <div className="menu-layout">
+          <aside className="menu-tabs">
+            {tabs.map((tab) => (
+              <button
+                key={tab.name}
+                className={`tab-button ${activeTab === tab.name ? "active" : ""}`}
+                onClick={() => setActiveTab(tab.name)}
+              >
+                {tab.name}
+              </button>
+            ))}
+          </aside>
+          <div className="menu-content">
+            {tabs.map(tab => tab.name === activeTab && renderMenuCards(tab.items))}
+          </div>
+        </div>
       )}
-    </Container>
+    </div>
   );
 };
 
