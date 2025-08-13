@@ -1,0 +1,89 @@
+.custom-navbar {
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+
+.btn-gradient {
+  background: linear-gradient(135deg, #ff6a00, #ee0979);
+  color: #fff !important;
+  font-weight: bold;
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: none;
+  transition: 0.3s;
+}
+
+.btn-gradient:hover {
+  opacity: 0.85;
+  transform: translateY(-2px);
+}
+
+
+.nav-link {
+  position: relative;
+  color: #fff;
+  transition: color 0.3s ease;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0%;
+  height: 2px;
+  background: linear-gradient(135deg, #ff6a00, #ee0979);
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #ff6a00; 
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+  background: linear-gradient(270deg, #ff6a00, #ee0979, #ff6a00);
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientFlow 5s ease infinite;
+  position: relative;
+  transition: 0.3s;
+}
+
+.navbar-brand::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0%;
+  height: 2px;
+  background: linear-gradient(90deg, #ff6a00, #ee0979);
+  transition: width 0.3s ease;
+}
+
+.navbar-brand:hover::after {
+  width: 100%;
+}
+
+.navbar-brand:hover {
+  animation-duration: 2s;
+}
+
+@keyframes gradientFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
