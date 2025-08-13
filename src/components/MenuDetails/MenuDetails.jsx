@@ -1,134 +1,16 @@
-// import { useParams, Link } from "react-router-dom";
-// import { useEffect, useState } from "react";
-// import * as menuService from "../../services/menuService";
-// import * as restaurantService from "../../services/restaurantService";
 
-// const MenuDetails = ({ menus, setMenus, handleDeleteMenu, user }) => {
-
-//   const { restaurantId } = useParams();
-//   const [restaurant, setRestaurant] = useState(null);
-
-//   useEffect(() => {
-//     const fetchMenus = async () => {
-//       try {
-//         const data = await menuService.indexByRestaurant(restaurantId);
-//         setMenus(data);
-//       } catch (err) {
-//         console.error(err);
-//       }
-//     };
-//     fetchMenus();
-//   }, [restaurantId]);
-
-//   useEffect(() => {
-//     const fetchRestaurant = async () => {
-//       try {
-//         const data = await restaurantService.show(restaurantId);
-//         setRestaurant(data);
-//       } catch (err) {
-//         console.error(err);
-//       }
-//     };
-//     fetchRestaurant();
-//   }, [restaurantId]);
-
-//   const mainCourse = menus.filter((menu) => menu.type === "main");
-//   const drinks = menus.filter((menu) => menu.type === "drinks");
-//   const dessert = menus.filter((menu) => menu.type === "dessert");
-
-//   if (!restaurant) return <main>Loading restaurant data...</main>;
-
-//   const isOwner = restaurant.ownerId?._id === user?._id;
-
-//   return (
-//     <main>
-//       {isOwner && (
-//       <Link to={`/restaurant/${restaurantId}/menu/new`}>Add New Menu</Link>
-//       )}
-//         {!props.menus.length ?(<h3>No Menu Yet!</h3>) :(
-//           {mainCourse.length > 0 && (
-//         <>
-//           <h2>Main Course</h2>
-//           {mainCourse.map((menu) => (
-//             <div key={menu._id}>
-//               <div>
-//                 <strong>{menu.name}</strong> - {menu.price} BD 
-//               </div>
-//               <div style={{ fontSize: "small" }}>{menu.description}</div>
-
-//               {isOwner && (
-//                 <>
-//                   <button onClick={() => handleDeleteMenu(restaurantId, menu._id)}>Delete</button>
-//                   <Link to={`/restaurant/${restaurantId}/menu/${menu._id}/edit`}>
-//                     Edit
-//                   </Link>
-//                 </>
-//               )}
-//             </div>
-//           ))}
-//         </>
-//       )}
-
-//       {dessert.length > 0 && (
-//         <>
-//           <h2>Dessert</h2>
-//           {dessert.map((menu) => (
-//             <div key={menu._id}>
-//               <div>
-//                 <strong>{menu.name}</strong> - {menu.price} BD 
-//               </div>
-//               <div style={{ fontSize: "small" }}>{menu.description}</div>
-
-//               {isOwner && (
-//                 <>
-//                   <button onClick={() => handleDeleteMenu(restaurantId, menu._id)}>Delete</button>
-//                   <Link to={`/restaurant/${restaurantId}/menu/${menu._id}/edit`}>
-//                     Edit
-//                   </Link>
-//                 </>
-//               )}
-//             </div>
-//           ))}
-//         </>
-//       )}
-
-//       {drinks.length > 0 && (
-//         <>
-//           <h2>Drinks</h2>
-//           {drinks.map((menu) => (
-//             <div key={menu._id}>
-//               <div>
-//                 <strong>{menu.name}</strong> - {menu.price} BD 
-//               </div>
-//               <div style={{ fontSize: "small" }}>{menu.description}</div>
-
-//               {isOwner && (
-//                 <>
-//                   <button onClick={() => handleDeleteMenu(restaurantId, menu._id)}>Delete</button>
-//                   <Link to={`/restaurant/${restaurantId}/menu/${menu._id}/edit`}>
-//                     Edit
-//                   </Link>
-//                 </>
-//               )}
-//             </div>
-//           ))}
-//         </>
-//       )}
-//         )}
-      
-//     </main>
-//   );
-// };
 
 // export default MenuDetails;
 import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import * as menuService from "../../services/menuService";
 import * as restaurantService from "../../services/restaurantService";
+import './MenueDetails.css'
 
 const MenuDetails = ({ menus, setMenus, handleDeleteMenu, user }) => {
   const { restaurantId } = useParams();
   const [restaurant, setRestaurant] = useState(null);
+  const [activeTab, setActiveTab] = useState("Main Course");
 
   useEffect(() => {
     const fetchMenus = async () => {
@@ -154,90 +36,107 @@ const MenuDetails = ({ menus, setMenus, handleDeleteMenu, user }) => {
     fetchRestaurant();
   }, [restaurantId]);
 
+  if (!restaurant) return <main style={{color:'white', textAlign:'center', marginTop:'3rem'}}>Loading restaurant data...</main>;
+
+  const isOwner = restaurant.ownerId?._id === user?._id;
+
   const mainCourse = menus.filter((menu) => menu.type === "main");
   const drinks = menus.filter((menu) => menu.type === "drinks");
   const dessert = menus.filter((menu) => menu.type === "dessert");
 
-  if (!restaurant) return <main>Loading restaurant data...</main>;
+  const renderMenuCards = (items) => {
+    if (!items.length) return <h4 className="no-menu">No items in this category!</h4>;
+    return items.map((menu) => (
+      <div key={menu._id} className="menu-card">
+        <div className="menu-field">
+          <span className="menu-label">Name:</span> {menu.name}
+        </div>
+        <div className="menu-field">
+          <span className="menu-label">Price:</span> {menu.price} BD
+        </div>
+        <div className="menu-field">
+          <span className="menu-label">Description:</span> {menu.description}
+        </div>
+        {isOwner && (
+          <div className="menu-buttons">
+            <button className="btn-delete" onClick={() => handleDeleteMenu(restaurantId, menu._id)}>Delete</button>
+            <Link to={`/restaurant/${restaurantId}/menu/${menu._id}/edit`}>
+              <button className="btn-edit">Edit</button>
+            </Link>
+          </div>
+        )}
+      </div>
+    ));
+  };
 
-  const isOwner = restaurant.ownerId?._id === user?._id;
+  const tabs = [
+    { name: "Main Course", items: mainCourse },
+    { name: "Dessert", items: dessert },
+    { name: "Drinks", items: drinks },
+  ];
 
-  return (
-    <main>
+return (
+  <div className="menu-details-container">
+    <header className="menu-header">
+      <h1 className="restaurant-name">{restaurant.name} Menu</h1>
       {isOwner && (
-        <Link to={`/restaurant/${restaurantId}/menu/new`}>Add New Menu</Link>
+        <Link to={`/restaurant/${restaurantId}/menu/new`}>
+          <button className="btn-add">Add New Menu</button>
+        </Link>
       )}
+    </header>
 
-      {!menus.length ? (
-        <h3>No Menu Yet!</h3>
-      ) : (
-        <>
-          {mainCourse.length > 0 && (
-            <>
-              <h2>Main Course</h2>
-              {mainCourse.map((menu) => (
-                <div key={menu._id}>
-                  <div>
-                    <strong>{menu.name}</strong> - {menu.price} BD
+    {menus.length === 0 ? (
+      <h4 className="no-menu">No Menu Yet!</h4>
+    ) : (
+      <div className="menu-layout">
+        <aside className="menu-tabs">
+          {tabs.map((tab) => (
+            <button
+              key={tab.name}
+              className={`tab-button ${activeTab === tab.name ? "active" : ""}`}
+              onClick={() => setActiveTab(tab.name)}
+            >
+              {tab.name}
+            </button>
+          ))}
+        </aside>
+
+        <div className="menu-content">
+          {tabs.map((tab) => 
+            tab.name === activeTab && tab.items.length > 0 ? (
+              tab.items.map((menu) => (
+                <div key={menu._id} className="menu-card">
+                  <div className="menu-card-header">
+                    <h3>{menu.name}</h3>
+                    <span className="type-badge">{tab.name}</span>
                   </div>
-                  <div style={{ fontSize: "small" }}>{menu.description}</div>
+                  <p className="menu-field"><span className="menu-label">Price:</span> {menu.price} BD</p>
+                  <p className="menu-field"><span className="menu-label">Description:</span> {menu.description}</p>
 
                   {isOwner && (
-                    <>
-                      <button onClick={() => handleDeleteMenu(restaurantId, menu._id)}>Delete</button>
-                      <Link to={`/restaurant/${restaurantId}/menu/${menu._id}/edit`}>Edit</Link>
-                    </>
+                    <div className="menu-buttons">
+                      <button
+                        className="btn-delete"
+                        onClick={() => handleDeleteMenu(restaurantId, menu._id)}
+                      >
+                        Delete
+                      </button>
+                      <Link to={`/restaurant/${restaurantId}/menu/${menu._id}/edit`}>
+                        <button className="btn-edit">Edit</button>
+                      </Link>
+                    </div>
                   )}
                 </div>
-              ))}
-            </>
+              ))
+            ) : null
           )}
+        </div>
+      </div>
+    )}
+  </div>
+);
 
-          {dessert.length > 0 && (
-            <>
-              <h2>Dessert</h2>
-              {dessert.map((menu) => (
-                <div key={menu._id}>
-                  <div>
-                    <strong>{menu.name}</strong> - {menu.price} BD
-                  </div>
-                  <div style={{ fontSize: "small" }}>{menu.description}</div>
-
-                  {isOwner && (
-                    <>
-                      <button onClick={() => handleDeleteMenu(restaurantId, menu._id)}>Delete</button>
-                      <Link to={`/restaurant/${restaurantId}/menu/${menu._id}/edit`}>Edit</Link>
-                    </>
-                  )}
-                </div>
-              ))}
-            </>
-          )}
-
-          {drinks.length > 0 && (
-            <>
-              <h2>Drinks</h2>
-              {drinks.map((menu) => (
-                <div key={menu._id}>
-                  <div>
-                    <strong>{menu.name}</strong> - {menu.price} BD
-                  </div>
-                  <div style={{ fontSize: "small" }}>{menu.description}</div>
-
-                  {isOwner && (
-                    <>
-                      <button onClick={() => handleDeleteMenu(restaurantId, menu._id)}>Delete</button>
-                      <Link to={`/restaurant/${restaurantId}/menu/${menu._id}/edit`}>Edit</Link>
-                    </>
-                  )}
-                </div>
-              ))}
-            </>
-          )}
-        </>
-      )}
-    </main>
-  );
 };
 
 export default MenuDetails;

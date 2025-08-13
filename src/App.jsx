@@ -15,6 +15,7 @@ import RestaurantDetails from './components/RestaurantDetails /RestaurantDetails
 import * as restaurantService from './services/restaurantService.js'
 import RestaurantForm from './components/RestaurantForm/RestaurantForm.jsx'
 import RestaurantList from './components/RestaurantList/RestaurantList.jsx'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
