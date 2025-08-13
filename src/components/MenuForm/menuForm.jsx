@@ -58,11 +58,17 @@ const MenuForm = ({ handleAddMenu, handleUpdateMenu, user, restaurant }) => {
             console.error("Error submitting form:", error);
         }
     };
-    const isOwner = restaurant?.ownerId?._id === user?._id;
+    const ownerIdValue = typeof restaurant?.ownerId === 'object'
+  ? restaurant?.ownerId?._id
+  : restaurant?.ownerId;
+
+const isOwner = ownerIdValue?.toString() === user?._id?.toString();
+
 
 
     return (
         <>
+        {console.log(isOwner)}
             {isOwner ? (
                 <>
                     <h1>{menuId ? "Edit Menu" : "Add Menu"}</h1>
