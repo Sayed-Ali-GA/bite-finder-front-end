@@ -152,50 +152,8 @@ const SignIn = (props) => {
                 e.target.style.transform = 'scale(1)';
               }}
             />
-            <Form.Text 
-              id="passwordHelpBlock" 
-              className="mt-2"
-              style={{ color: 'white', opacity: '0.7', fontSize: '0.85rem' }}
-            >
-              Your password must not contain special characters or emojis.
-            </Form.Text>
           </Form.Group>
-
-          <Form.Group className="mb-4">
-            <Form.Label 
-              htmlFor="passwordConf" 
-              className="fw-semibold"
-              style={{ color: 'white', opacity: '0.9' }}
-            >
-              Confirm Password
-            </Form.Label>
-            <Form.Control
-              type="password"
-              name='passwordConf'
-              id="passwordConf"
-              placeholder="Confirm your password"
-              onChange={handleChange}
-              className="border-0"
-              style={{ 
-                borderRadius: '12px',
-                padding: '0.75rem 1rem',
-                fontSize: '1rem',
-                background: 'rgba(255, 255, 255, 0.1)',
-                backdropFilter: 'blur(10px)',
-                color: 'white',
-                transition: 'all 0.3s ease'
-              }}
-              onFocus={(e) => {
-                e.target.style.background = 'rgba(255, 255, 255, 0.15)';
-                e.target.style.transform = 'scale(1.02)';
-              }}
-              onBlur={(e) => {
-                e.target.style.background = 'rgba(255, 255, 255, 0.1)';
-                e.target.style.transform = 'scale(1)';
-              }}
-            />
-          </Form.Group>
-
+          
           <div className="d-grid gap-2 mt-4">
             <Button 
               size='lg' 
