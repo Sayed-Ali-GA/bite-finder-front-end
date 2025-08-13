@@ -144,7 +144,11 @@ const RestaurantForm = (props) => {
         }
       }
     }
-  }, [props.selectedRestaurant]);
+
+    else{
+      setFormData(initialState)
+    }
+  }, [props.selectedRestaurant])
 
   const handleChange = (evt) => {
     setFormData({ ...formData, [evt.target.name]: evt.target.value });
@@ -171,6 +175,7 @@ const handleSubmit = async (evt) => {
       if (updatedRestaurant && updatedRestaurant._id) {
         navigate(`/restaurant/${updatedRestaurant._id}`);
       } else {
+
         navigate("/");
       }
     } else {
