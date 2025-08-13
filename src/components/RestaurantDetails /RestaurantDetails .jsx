@@ -40,22 +40,22 @@ const RestaurantDetails = (props) => {
 
   return (
     <div className="restaurant-details-container">
-<header className="restaurant-header">
-  <Link to="/restaurant" className="back-link">← Back</Link>
+      <header className="restaurant-header">
+        <Link to="/restaurant" className="back-link">← Back</Link>
 
-  <h1 className="restaurant-name">{restaurant.name}</h1>
-  <h2 className="restaurant-type">{restaurant.type}</h2>
-  <p className="restaurant-meta">
-    Posted by <strong>{restaurant.ownerId?.username || "Unknown"}</strong> on {restaurant.createdAt ? new Date(restaurant.createdAt).toLocaleDateString() : "Date not available"}
-  </p>
+        <h1 className="restaurant-name">{restaurant.name}</h1>
+        <h2 className="restaurant-type">{restaurant.type}</h2>
+        <p className="restaurant-meta">
+          Posted by <strong>{restaurant.ownerId?.username || "Unknown"}</strong> on {restaurant.createdAt ? new Date(restaurant.createdAt).toLocaleDateString() : "Date not available"}
+        </p>
 
-  {isOwner && (
-    <div className="restaurant-actions">
-      <Link to={`/restaurant/${restaurantId}/edit`} className="btn-edit">Edit</Link>
-      <button className="btn-delete" onClick={() => props.handleDeleterestaurant(restaurantId)}>Delete</button>
-    </div>
-  )}
-</header>
+        {isOwner && (
+          <div className="restaurant-actions">
+            <Link to={`/restaurant/${restaurantId}/edit`} className="btn-edit">Edit</Link>
+            <button className="btn-delete" onClick={() => props.handleDeleterestaurant(restaurantId)}>Delete</button>
+          </div>
+        )}
+      </header>
 
       <section className="menu-link-section">
         <Link to={`/restaurant/${restaurant._id}/menu`} className="btn-view-menu">
@@ -64,17 +64,24 @@ const RestaurantDetails = (props) => {
       </section>
 
       {/* COMMENT SECTION UNCHANGED */}
-      <section className="comments-section">
-        <h2>Comments:</h2>
-        <CommentForm handleAddComment={handleAddComment} />
-        {!restaurant.comments.length && <p className="no-comments">There are no comments yet. Be the first to add one!</p>}
-        {restaurant.comments.map((comment) => (
-          <div key={comment._id}>
-            <button onClick={() => handleDeleteComment(comment._id)}>Delete {comment.content}</button>
-            <p>{comment.authorId.username}: {comment.content}</p>
-          </div>
-        ))}
-      </section>
+<section className="comments-section">
+  {/* <h2>Comments:</h2> */}
+  <CommentForm handleAddComment={handleAddComment} />
+  {!restaurant.comments.length && (
+    <p className="no-comments">
+      There are no comments yet. Be the first to add one!
+    </p>
+  )}
+  {restaurant.comments.map((comment) => (
+    <div key={comment._id} className="comment-item">
+      <p className="comment-text">
+        {comment.authorId.username}: {comment.content}
+      </p>
+      <button onClick={() => handleDeleteComment(comment._id)}>Delete</button>
+    </div>
+  ))}
+</section>
+
     </div>
   );
 };
