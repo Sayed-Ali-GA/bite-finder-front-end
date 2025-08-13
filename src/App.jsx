@@ -93,6 +93,8 @@ const handleAddRestaurant = async (formData) => {
   const newRestaurant = await restaurantService.create(formData)
   setRestaurants(prevRestaurants => [newRestaurant, ...prevRestaurants])
   setSelectedRestaurant(newRestaurant) 
+  newRestaurant.ownerId={}
+  newRestaurant.ownerId.username=user.username
   return newRestaurant
 }
 
