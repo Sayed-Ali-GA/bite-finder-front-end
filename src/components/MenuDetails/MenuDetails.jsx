@@ -42,7 +42,9 @@ const MenuDetails = ({ menus, setMenus, handleDeleteMenu, user }) => {
 
   return (
     <main>
+      {isOwner && (
       <Link to={`/restaurant/${restaurantId}/menu/new`}>Add New Menu</Link>
+      )}
 
       {mainCourse.length > 0 && (
         <>

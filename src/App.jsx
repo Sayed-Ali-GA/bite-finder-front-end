@@ -179,6 +179,8 @@ const App = () => {
                 <MenuForm
                   handleAddMenu={handleAddMenu}
                   handleUpdateMenu={handleUpdateMenu}
+                  user={user}
+                  restaurant={selectedRestaurant}
                 />
               }
             />
