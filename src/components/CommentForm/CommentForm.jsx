@@ -24,7 +24,7 @@ const CommentForm = (props) => {
     justifyContent: 'center',
     width: '100%',
     padding: '2rem',
-    background: 'linear-gradient(135deg, #0F2027, #203A43, #2C5364)', // dark background
+    background: 'linear-gradient(135deg, #0F2027, #203A43, #2C5364)', 
   }}
 >
   <form
@@ -37,7 +37,7 @@ const CommentForm = (props) => {
       gap: '1rem',
       padding: '1.5rem',
       borderRadius: '20px',
-      background: 'rgba(255, 255, 255, 0.07)', // dark card style
+      background: 'rgba(255, 255, 255, 0.07)', 
       backdropFilter: 'blur(15px)',
       boxShadow: '0 15px 35px rgba(0,0,0,0.3)',
       color: 'white',
@@ -65,7 +65,7 @@ const CommentForm = (props) => {
         background: 'rgba(255, 255, 255, 0.07)',
         color: 'white',
         resize: 'vertical',
-        minHeight: 'auto', // ensures it doesn't stretch
+        minHeight: 'auto', 
       }}
     />
 
@@ -77,7 +77,7 @@ const CommentForm = (props) => {
         fontWeight: 'bold',
         borderRadius: '12px',
         border: '2px solid rgba(255,255,255,0.3)',
-        background: 'linear-gradient(135deg, #FF6A00, #EE0979)', // matching button gradient
+        background: 'linear-gradient(135deg, #FF6A00, #EE0979)', 
         color: 'white',
         cursor: 'pointer',
         transition: 'transform 0.3s ease, opacity 0.3s ease',
