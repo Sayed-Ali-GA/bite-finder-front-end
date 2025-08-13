@@ -9,7 +9,7 @@ const SignUp = (props) => {
 
   const initialState = {
     username: '',
-    password: '',
+    password: '', 
     passwordConf: '',
   }
 
@@ -167,6 +167,13 @@ const SignUp = (props) => {
                 e.target.style.transform = 'scale(1)';
               }}
             />
+            <Form.Text 
+              id="passwordHelpBlock" 
+              className="mt-2"
+              style={{ color: 'white', opacity: '0.7', fontSize: '0.85rem' }}
+            >
+              Your password must not contain special characters or emojis.
+            </Form.Text>
           </Form.Group>
 
           <Form.Group className="mb-4">
