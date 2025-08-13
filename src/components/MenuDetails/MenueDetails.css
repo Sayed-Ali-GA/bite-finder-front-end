@@ -78,11 +78,11 @@
 .menu-content {
   flex: 1;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 0.8rem;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); /* was 180px */
+  gap: 1rem; /* slightly bigger gap */
 }
 
-/* Menu Card - Shorter & compact */
+/* Menu Card - Wider & text wrap */
 .menu-card {
   background: rgba(255,255,255,0.05);
   border-radius: 16px;
@@ -93,7 +93,9 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 200px;
+  height: 200px; /* allow to grow naturally */
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
 }
 .menu-card:hover {
   transform: translateY(-2px) scale(1.01);
