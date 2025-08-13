@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import * as restaurantService from '../../services/restaurantService'
 import { Link } from 'react-router-dom'
@@ -15,7 +15,10 @@ const RestaurantDetails = (props) => {
     }, [restaurantId])
   const handleAddComment = async (formData) => {
     const newComment = await restaurantService.createComment(formData, restaurantId)
+    newComment.authorId = {}
+    newComment.authorId.username = props.user.username
     setRestaurant({...restaurant, comments: [...restaurant.comments, newComment]})
+
   }
 
   const handleDeleteComment = async (commentId) => {
@@ -33,6 +36,11 @@ const RestaurantDetails = (props) => {
   return (
     <main className="res-details">
     <header className="res-details">
+
+          <br />
+         <Link to={`/restaurant`}> 🔙Back</Link>
+         <br />
+
         <h1>{restaurant.name}</h1>
         <h2>{restaurant.type}</h2>
         <p>{restaurant.ownerId?.username || "Unknown"} Posted on {restaurant.createdAt ? new Date(restaurant.createdAt).toLocaleDateString() : "Date not available"}</p>
