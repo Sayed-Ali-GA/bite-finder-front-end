@@ -17,6 +17,8 @@ import RestaurantForm from './components/RestaurantForm/RestaurantForm.jsx'
 import RestaurantList from './components/RestaurantList/RestaurantList.jsx'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 const App = () => {
   const navigate = useNavigate()
@@ -90,12 +92,14 @@ const App = () => {
   }
 
 
-const handleAddRestaurant = async (formData) => {
-  const newRestaurant = await restaurantService.create(formData)
-  setRestaurants(prevRestaurants => [newRestaurant, ...prevRestaurants])
-  setSelectedRestaurant(newRestaurant) 
-  return newRestaurant
-}
+  const handleAddRestaurant = async (formData) => {
+    const newRestaurant = await restaurantService.create(formData)
+    setRestaurants(prevRestaurants => [newRestaurant, ...prevRestaurants])
+    setSelectedRestaurant(newRestaurant)
+    newRestaurant.ownerId = {}
+    newRestaurant.ownerId.username = user.username
+    return newRestaurant
+  }
 
 
   const handleUpdateRestaurant = async (formData, _id) => {
@@ -163,44 +167,44 @@ const handleAddRestaurant = async (formData) => {
     navigate('/restaurant')
   }
 
-return (
-  <>
-    <NavBar user={user} handleSignOut={handleSignOut} />
-    <Routes>
-      {user ? (
-        <>
-          {/* Protected Routes */}
-          <Route
-            path="/restaurant"
-            element={
-              <RestaurantList
-                restaurants={restaurants}
-                handleSelect={handleRestaurantSelect}
-              />
-            }
-          />
+  return (
+    <>
+      <NavBar user={user} handleSignOut={handleSignOut} />
+      <Routes>
+        {user ? (
+          <>
+            {/* Protected Routes */}
+            <Route
+              path="/restaurant"
+              element={
+                <RestaurantList
+                  restaurants={restaurants}
+                  handleSelect={handleRestaurantSelect}
+                />
+              }
+            />
 
-          <Route
-            path="/restaurant/new"
-            element={
-              <RestaurantForm
-                handleAddRestaurant={handleAddRestaurant}
-                setSelectedRestaurant={setSelectedRestaurant}
-                user={user}
-              />
-            }
-          />
+            <Route
+              path="/restaurant/new"
+              element={
+                <RestaurantForm
+                  handleAddRestaurant={handleAddRestaurant}
+                  setSelectedRestaurant={setSelectedRestaurant}
+                  user={user}
+                />
+              }
+            />
 
-          <Route
-            path="/restaurant/:restaurantId"
-            element={
+            <Route
+              path="/restaurant/:restaurantId"
+              element={
                 <RestaurantDetails
                   user={user}
                   handleUpdateRestaurant={handleUpdateRestaurant}
                   handleRestaurantSelect={handleRestaurantSelect}
                   handleDeleterestaurant={handleDeleterestaurant} />}
-          />
-                      <Route
+            />
+            <Route
               path="/restaurant/:restaurantId/edit"
               element={
                 <RestaurantForm
@@ -212,71 +216,131 @@ return (
             />
 
 
-          <Route
-            path="/restaurant/:restaurantId/menu"
-            element={
-              <MenuDetails
-                menus={menus}
-                setMenus={setMenus}
-                handleDeleteMenu={handleDeleteMenu}
-                user={user}
-              />
-            }
-          />
+            <Route
+              path="/restaurant/:restaurantId/menu"
+              element={
+                <MenuDetails
+                  menus={menus}
+                  setMenus={setMenus}
+                  handleDeleteMenu={handleDeleteMenu}
+                  user={user}
+                />
+              }
+            />
 
-          <Route
-            path="/restaurant/:restaurantId/menu/new"
-            element={
-              <MenuForm
-                handleAddMenu={handleAddMenu}
-                handleUpdateMenu={handleUpdateMenu}
-              />
-            }
-          />
+            <Route
+              path="/restaurant/:restaurantId/menu/new"
+              element={
+                <MenuForm
+                  handleAddMenu={handleAddMenu}
+                  handleUpdateMenu={handleUpdateMenu}
+                />
+              }
+            />
 
-          <Route
-            path="/restaurant/:restaurantId/menu/:menuId/edit"
-            element={
-              <MenuForm
-                handleAddMenu={handleAddMenu}
-                handleUpdateMenu={handleUpdateMenu}
-                user={user}
-                restaurant={selectedRestaurant}
-                handleMenuSelect={handleMenuSelect}
-              />
-            }
-          />
-        </>
-      ) : (
-        <>
-          {/* Public Routes */}
-          <Route
-            path="/sign-up"
-            element={<SignUp handleSignUp={handleSignUp} user={user} />}
-          />
-          <Route
-            path="/sign-in"
-            element={<SignIn handleSignIn={handleSignIn} user={user} />}
-          />
-        </>
-      )}
+            <Route
+              path="/restaurant/:restaurantId/menu/:menuId/edit"
+              element={
+                <MenuForm
+                  handleAddMenu={handleAddMenu}
+                  handleUpdateMenu={handleUpdateMenu}
+                  user={user}
+                  restaurant={selectedRestaurant}
+                  handleMenuSelect={handleMenuSelect}
+                />
+              }
+            />
+          </>
+        ) : (
+          <>
+            {/* Public Routes */}
+            <Route
+              path="/sign-up"
+              element={<SignUp handleSignUp={handleSignUp} user={user} />}
+            />
+            <Route
+              path="/sign-in"
+              element={<SignIn handleSignIn={handleSignIn} user={user} />}
+            />
+          </>
+        )}
 
-      <Route
-        path="/"
-        element={
-          <div>
-            <h1>Welcome {user?.username || "visitor"}</h1>
-            <p>
-              Sign up or sign in to create a restaurant or to see the list of
-              restaurants with their details
-            </p>
-          </div>
-        }
-      />
-      <Route path="*" element={<h1>404</h1>} />
-    </Routes>
-  </>
-)
+        <Route
+          path="/"
+          element={
+            <div
+              style={{
+                minHeight: '100vh',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                textAlign: 'center',
+                padding: '2rem',
+                background: 'linear-gradient(135deg, #0F2027, #203A43, #2C5364)',
+                color: 'white',
+                fontFamily: 'Arial, sans-serif',
+              }}
+            >
+              <div
+                style={{
+                  background: 'rgba(255, 255, 255, 0.07)',
+                  padding: '2.5rem',
+                  borderRadius: '20px',
+                  backdropFilter: 'blur(15px)',
+                  boxShadow: '0 15px 35px rgba(0,0,0,0.3)',
+                  maxWidth: '600px',
+                  width: '100%',
+                }}
+              >
+                <h1
+                  style={{
+                    fontSize: '2.5rem',
+                    fontWeight: '800',
+                    marginBottom: '1rem',
+                    background: 'linear-gradient(135deg, #FF6A00, #EE0979)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    textShadow: '0 2px 10px rgba(0,0,0,0.3)',
+                  }}
+                >
+                  Welcome {user?.username || 'visitor'}
+                </h1>
+
+                {user ? (
+                  <p
+                    style={{
+                      fontSize: '1.1rem',
+                      opacity: 0.85,
+                      maxWidth: '500px',
+                      margin: '0 auto',
+                    }}
+                  >
+                    Start your own restaurant and share it with others!
+                  </p>
+                ) : (
+                  <p
+                    style={{
+                      fontSize: '1.1rem',
+                      opacity: 0.85,
+                      maxWidth: '500px',
+                      margin: '0 auto',
+                    }}
+                  >
+                    Sign up or sign in to create a restaurant or to see the list of
+                    restaurants with their details.
+                  </p>
+                )}
+              </div>
+            </div>
+          }
+        />
+
+
+
+        <Route path="*" element={<h1>404</h1>} />
+      </Routes>
+    </>
+  )
 
 }
 

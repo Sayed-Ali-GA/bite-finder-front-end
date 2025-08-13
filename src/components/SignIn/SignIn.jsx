@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
+import Card from 'react-bootstrap/Card'
 
 
 const SignIn = (props) => {
@@ -29,18 +32,176 @@ const SignIn = (props) => {
   }
 
   return (
-    <main>
-      <h1>Sign In Form</h1>
-      <form onSubmit={handleSubmit}>
-        <label>Username:</label>
-        <input type="text" name='username' onChange={handleChange} />
-        <br />
-        <label>Password:</label>
-        <input type="password" name='password' onChange={handleChange} />
-        <br />
-        <button type="submit">Sign In</button>
-      </form>
-    </main>
+  <main 
+    className="d-flex justify-content-center align-items-center min-vh-100"
+    style={{
+      background: 'linear-gradient(135deg, #0F2027, #203A43, #2C5364)',
+      padding: '2rem'
+    }}
+  >
+    <Card 
+      className="border-0"
+      style={{ 
+        maxWidth: '400px', 
+        width: '100%', 
+        borderRadius: '20px',
+        background: 'rgba(255, 255, 255, 0.07)',
+        backdropFilter: 'blur(15px)',
+        boxShadow: '0 15px 35px rgba(0, 0, 0, 0.3)',
+        transition: 'transform 0.35s ease, box-shadow 0.35s ease'
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.transform = 'translateY(-8px) scale(1.02)';
+        e.currentTarget.style.boxShadow = '0 25px 50px rgba(0, 0, 0, 0.5)';
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = 'translateY(0) scale(1)';
+        e.currentTarget.style.boxShadow = '0 15px 35px rgba(0, 0, 0, 0.3)';
+      }}
+    >
+      <Card.Header 
+        className="text-center border-0 py-4"
+        style={{ 
+          borderTopLeftRadius: '20px', 
+          borderTopRightRadius: '20px',
+          background: 'transparent'
+        }}
+      >
+        <h1 
+          className="mb-0" 
+          style={{ 
+            fontSize: '2.8rem', 
+            fontWeight: '800',
+            background: 'linear-gradient(135deg, #FF6A00, #EE0979)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            textShadow: '0 2px 10px rgba(0,0,0,0.3)'
+          }}
+        >
+          Sign In
+        </h1>
+      </Card.Header>
+      
+      <Card.Body className="p-4">
+        <Form onSubmit={handleSubmit}>
+          <Form.Group className="mb-4">
+            <Form.Label 
+              className="fw-semibold"
+              style={{ color: 'white', opacity: '0.9' }}
+            >
+              Username
+            </Form.Label>
+            <Form.Control 
+              type="text" 
+              name='username' 
+              id='username' 
+              placeholder="Enter your username" 
+              onChange={handleChange}
+              className="border-0"
+              style={{ 
+                borderRadius: '12px',
+                padding: '0.75rem 1rem',
+                fontSize: '1rem',
+                background: 'rgba(255, 255, 255, 0.1)',
+                backdropFilter: 'blur(10px)',
+                color: 'white',
+                transition: 'all 0.3s ease'
+              }}
+              onFocus={(e) => {
+                e.target.style.background = 'rgba(255, 255, 255, 0.15)';
+                e.target.style.transform = 'scale(1.02)';
+              }}
+              onBlur={(e) => {
+                e.target.style.background = 'rgba(255, 255, 255, 0.1)';
+                e.target.style.transform = 'scale(1)';
+              }}
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-4">
+            <Form.Label 
+              htmlFor="password" 
+              className="fw-semibold"
+              style={{ color: 'white', opacity: '0.9' }}
+            >
+              Password
+            </Form.Label>
+            <Form.Control
+              type="password"
+              name='password'
+              id="password"
+              placeholder="Enter your password"
+              aria-describedby="passwordHelpBlock"
+              onChange={handleChange}
+              className="border-0"
+              style={{ 
+                borderRadius: '12px',
+                padding: '0.75rem 1rem',
+                fontSize: '1rem',
+                background: 'rgba(255, 255, 255, 0.1)',
+                backdropFilter: 'blur(10px)',
+                color: 'white',
+                transition: 'all 0.3s ease'
+              }}
+              onFocus={(e) => {
+                e.target.style.background = 'rgba(255, 255, 255, 0.15)';
+                e.target.style.transform = 'scale(1.02)';
+              }}
+              onBlur={(e) => {
+                e.target.style.background = 'rgba(255, 255, 255, 0.1)';
+                e.target.style.transform = 'scale(1)';
+              }}
+            />
+          </Form.Group>
+          
+          <div className="d-grid gap-2 mt-4">
+            <Button 
+              size='lg' 
+              type='submit' 
+              className="border-0 fw-bold"
+              style={{ 
+                borderRadius: '12px',
+                padding: '0.75rem',
+                fontSize: '1.1rem',
+                background: 'linear-gradient(135deg, #FF6A00, #EE0979)',
+                color: 'white',
+                transition: 'opacity 0.3s ease, transform 0.3s ease',
+                letterSpacing: '0.5px'
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.opacity = '0.9';
+                e.target.style.transform = 'translateY(-2px) scale(1.02)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.opacity = '1';
+                e.target.style.transform = 'translateY(0) scale(1)';
+              }}
+            >
+              Sign In
+            </Button>
+          </div>
+        </Form>
+        
+        <div className="text-center mt-4 pt-3" style={{ borderTop: '1px solid rgba(255, 255, 255, 0.1)' }}>
+          <p className="mb-2" style={{ color: 'white', opacity: '0.8', fontSize: '0.9rem' }}>
+            Don't have an account yet?
+          </p>
+          <a 
+            href="/sign-up" 
+            style={{
+              color: '#FF6A00',
+              textDecoration: 'none',
+              fontWeight: '600',
+              fontSize: '1rem',
+              transition: 'all 0.3s ease'
+            }}
+          >
+            Go to Sign Up Form
+          </a>
+        </div>
+      </Card.Body>
+    </Card>
+  </main>
   )
 }
 

@@ -1,101 +1,128 @@
 // import { Link } from "react-router-dom";
+// import RestaurantMap from "../RestaurantMap/RestaurantMap";
+// import "./RestaurantList.css";
 
-// const RestaurantList = ( props ) => {
-//   const { restaurants, handleSelect } = props;
 
+// const RestaurantList = ({ restaurants, handleSelect }) => {
 //   return (
-//     <>
-//       <h1>Restaurant List</h1>
-//       <ul>
-//         {restaurants.length ? (
-//           restaurants.map((restaurant) => (
-//             <li key={restaurant._id}>
-//               <span onClick={() => handleSelect(restaurant)}>
-//                 <Link to={`/restaurant/${restaurant._id}`}>
+//     <div className="restaurant-container">
+//       <h1 className="title">🍽 Explore Our Restaurants</h1>
 
-//                 <h2>{restaurant.name}</h2>  
-//                 <p>{restaurant.description}</p>
-//                 {restaurant.location}       
-//                 <p>{restaurant.ownerId?.username || "Unknown"} Posted on {restaurant.createdAt ? new Date(restaurant.createdAt).toLocaleDateString() : "Date not available"}</p>
-                
-//                 </Link>
-//               </span>
-              
-//               {/* <button onClick={() => handleUpdate(restaurant)}>Update</button>{" "}
-//               <button onClick={() => handleDelete(restaurant._id)}>Delete</button>{" "} */}
+//       {restaurants.length ? (
+//         <div className="restaurant-grid">
+//           {restaurants.map((restaurant) => (
+//             <div className="restaurant-card" key={restaurant._id}>
+//               {/* Header */}
+//               <div className="card-header">
+//                 <h2>{restaurant.name}</h2>
+//                 <span className="type-badge">{restaurant.type}</span>
+//               </div>
 
-//               {/* <Link to={`/restaurant/${restaurant._id}/menu`}>Menu</Link> */}
+//               {/* Description */}
+//               <p className="description">{restaurant.description}</p>
+//               <p className="location">
+//                 📍 <strong>{restaurant.location}</strong>
+//               </p>
+//               <p className="meta">
+//                 {restaurant.ownerId?.username || "Unknown"} —{" "}
+//                 {restaurant.createdAt
+//                   ? new Date(restaurant.createdAt).toLocaleDateString()
+//                   : "Date not available"}
+//               </p>
 
-//             </li>
-//           ))
-//         ) : (
-//           <h2>No Restaurants Yet</h2>
-//         )}
-//       </ul>
-//     </>
+//               {/* Map */}
+//               {restaurant.coordinates?.lat && restaurant.coordinates?.lng && (
+//                 <div className="map-container">
+//                   <RestaurantMap
+//                     lat={restaurant.coordinates.lat}
+//                     lng={restaurant.coordinates.lng}
+//                   />
+//                 </div>
+//               )}
+
+//               {/* Button */}
+//               <Link
+//                 to={`/restaurant/${restaurant._id}`}
+//                 onClick={() => handleSelect(restaurant)}
+//                 className="view-btn"
+//               >
+//                 View Details
+//               </Link>
+//             </div>
+//           ))}
+//         </div>
+//       ) : (
+//         <h2 className="no-data">No Restaurants Yet</h2>
+//       )}
+//     </div>
 //   );
 // };
 
 // export default RestaurantList;
 
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 import RestaurantMap from "../RestaurantMap/RestaurantMap";
+import "./RestaurantList.css";
 
-const RestaurantList = (props) => {
-  const { restaurants, handleSelect } = props;
-
+const RestaurantList = ({ restaurants, handleSelect }) => {
   return (
-    <>
-      <h1>Restaurant List</h1>
-      <ul>
-        {restaurants.length ? (
-          restaurants.map((restaurant) => (
-            <li
-              key={restaurant._id}
-              
-            >
-             
-              <Link
-                to={`/restaurant/${restaurant._id}`}
-                style={{
-                  textDecoration: "none",
-                  color: "inherit",
-                  cursor: "pointer",
-                  display: "block",
-                }}
-                onClick={() => handleSelect(restaurant)}
-              >
-                <h2>{restaurant.name}</h2>
-                <h5>{restaurant.type}</h5>
-                <p>{restaurant.description}</p>
-                <p>
-                  <strong>Location:</strong> {restaurant.location}
-                </p>
-                
-              </Link>
+    <div className="restaurant-container">
+      <h1 className="title">🍽 Explore Our Restaurants</h1>
 
-            
-              {restaurant.coordinates?.lat && restaurant.coordinates?.lng && (
-                <RestaurantMap
-                  lat={restaurant.coordinates.lat}
-                  lng={restaurant.coordinates.lng}
-                />
-              )}
-              <p>
-                  {restaurant.ownerId?.username || "Unknown"} — Posted on{" "}
-                  {restaurant.createdAt
-                    ? new Date(restaurant.createdAt).toLocaleDateString()
-                    : "Date not available"}
-                </p>
-            </li>
-            
-          ))
-        ) : (
-          <h2>No Restaurants Yet</h2>
-        )}
-      </ul>
-    </>
+      {restaurants.length > 0 ? (
+        <div className="restaurant-grid">
+          {restaurants.map((restaurant) => {
+            const { _id, name, type, description, location, ownerId, createdAt, coordinates } = restaurant;
+            return (
+              <div className="restaurant-card" key={_id}>
+                
+                {/* Header */}
+                <div className="card-header">
+                  <h2>{name}</h2>
+                  <span className="type-badge">{type}</span>
+                </div>
+
+                {/* Main content */}
+                <div className="card-content">
+                  <p className="description">{description}</p>
+                  <p className="location">📍 <strong>{location}</strong></p>
+                  <p className="meta">
+                    {ownerId?.username || "Unknown"} —{" "}
+                    {createdAt ? new Date(createdAt).toLocaleDateString() : "Date not available"}
+                  </p>
+
+                  {/* Map */}
+                  {coordinates?.lat && coordinates?.lng && (
+                    <div className="map-container">
+                      <RestaurantMap lat={coordinates.lat} lng={coordinates.lng} />
+                    </div>
+                  )}
+                </div>
+
+                {/* Button at bottom */}
+                <Link
+                  to={`/restaurant/${_id}`}
+                  onClick={() => handleSelect(restaurant)}
+                  className="view-btn"
+                >
+                  View Details
+                </Link>
+              </div>
+            );
+          })}
+        </div>
+      ) : (
+        <h2 className="no-data">No Restaurants Yet</h2>
+      )}
+    </div>
   );
+};
+
+// PropTypes
+RestaurantList.propTypes = {
+  restaurants: PropTypes.arrayOf(PropTypes.object).isRequired,
+  handleSelect: PropTypes.func.isRequired,
 };
 
 export default RestaurantList;

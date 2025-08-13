@@ -1,3 +1,6 @@
+
+
+// export default MenuDetails;
 import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import * as menuService from "../../services/menuService";
@@ -72,39 +75,68 @@ const MenuDetails = ({ menus, setMenus, handleDeleteMenu, user }) => {
     { name: "Drinks", items: drinks },
   ];
 
-  return (
-    <div className="menu-details-container">
-      <header className="menu-header">
-        <h1 className="restaurant-name">{restaurant.name} Menu</h1>
-        {isOwner && (
-          <Link to={`/restaurant/${restaurantId}/menu/new`}>
-            <button className="btn-add">Add New Menu</button>
-          </Link>
-        )}
-      </header>
-
-      {menus.length === 0 ? (
-        <h4 className="no-menu">No Menu Yet!</h4>
-      ) : (
-        <div className="menu-layout">
-          <aside className="menu-tabs">
-            {tabs.map((tab) => (
-              <button
-                key={tab.name}
-                className={`tab-button ${activeTab === tab.name ? "active" : ""}`}
-                onClick={() => setActiveTab(tab.name)}
-              >
-                {tab.name}
-              </button>
-            ))}
-          </aside>
-          <div className="menu-content">
-            {tabs.map(tab => tab.name === activeTab && renderMenuCards(tab.items))}
-          </div>
-        </div>
+return (
+  <div className="menu-details-container">
+    <header className="menu-header">
+      <h1 className="restaurant-name">{restaurant.name} Menu</h1>
+      {isOwner && (
+        <Link to={`/restaurant/${restaurantId}/menu/new`}>
+          <button className="btn-add">Add New Menu</button>
+        </Link>
       )}
-    </div>
-  );
+    </header>
+
+    {menus.length === 0 ? (
+      <h4 className="no-menu">No Menu Yet!</h4>
+    ) : (
+      <div className="menu-layout">
+        <aside className="menu-tabs">
+          {tabs.map((tab) => (
+            <button
+              key={tab.name}
+              className={`tab-button ${activeTab === tab.name ? "active" : ""}`}
+              onClick={() => setActiveTab(tab.name)}
+            >
+              {tab.name}
+            </button>
+          ))}
+        </aside>
+
+        <div className="menu-content">
+          {tabs.map((tab) => 
+            tab.name === activeTab && tab.items.length > 0 ? (
+              tab.items.map((menu) => (
+                <div key={menu._id} className="menu-card">
+                  <div className="menu-card-header">
+                    <h3>{menu.name}</h3>
+                    <span className="type-badge">{tab.name}</span>
+                  </div>
+                  <p className="menu-field"><span className="menu-label">Price:</span> {menu.price} BD</p>
+                  <p className="menu-field"><span className="menu-label">Description:</span> {menu.description}</p>
+
+                  {isOwner && (
+                    <div className="menu-buttons">
+                      <button
+                        className="btn-delete"
+                        onClick={() => handleDeleteMenu(restaurantId, menu._id)}
+                      >
+                        Delete
+                      </button>
+                      <Link to={`/restaurant/${restaurantId}/menu/${menu._id}/edit`}>
+                        <button className="btn-edit">Edit</button>
+                      </Link>
+                    </div>
+                  )}
+                </div>
+              ))
+            ) : null
+          )}
+        </div>
+      </div>
+    )}
+  </div>
+);
+
 };
 
 export default MenuDetails;
