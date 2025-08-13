@@ -73,6 +73,7 @@ const isOwner = ownerIdValue?.toString() === user?._id?.toString();
                 <>
                     <h1>{menuId ? "Edit Menu" : "Add Menu"}</h1>
                     <form onSubmit={handleSubmit}>
+                        
                         <label htmlFor="name">Title:</label>
                         <input
                             id="name"
@@ -127,3 +128,4 @@ const isOwner = ownerIdValue?.toString() === user?._id?.toString();
 };
 
 export default MenuForm;
+
