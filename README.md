@@ -8,7 +8,7 @@ Bite Finder is a web application designed to help users discover and explore  re
 
 ## Getting Started
 
-- **Deployed App:** [View Bite Finder Online](https://your-deployed-app-link.com)  
+- **Deployed App:** [View Bite Finder Online](https://bite-finder-front-end.vercel.app/)  
 - **Planning Materials:** [View Planning Docs](https://trello.com/b/H9fdLLQf/project-3)  
 - **Back-End Repository:** [View Back-End Code](https://github.com/Sayed-Ali-GA/bite-finder-back-end)
 
