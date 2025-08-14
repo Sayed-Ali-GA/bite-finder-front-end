@@ -1,4 +1,4 @@
-/* Box-sizing للجميع */
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -6,7 +6,7 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Container */
+
 .restaurant-container {
   padding: 3rem 1.5rem;
   background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
@@ -17,7 +17,7 @@
   transition: background 0.5s ease;
 }
 
-/* Title */
+
 .title {
   text-align: center;
   font-size: clamp(1.8rem, 4vw, 3rem);
@@ -30,7 +30,7 @@
   text-shadow: 0 3px 10px rgba(0,0,0,0.25);
 }
 
-/* Grid */
+
 .restaurant-grid {
   display: grid;
   gap: 2rem;
@@ -40,7 +40,7 @@
   align-items: stretch;
 }
 
-/* Card */
+
 .restaurant-card {
   background: rgba(255, 255, 255, 0.04);
   border-radius: 20px;
@@ -155,7 +155,7 @@
   transform: translateY(-2px);
 }
 
-/* No Data */
+
 .no-data {
   color: white;
   text-align: center;
@@ -164,7 +164,6 @@
   opacity: 0.8;
 }
 
-/* Responsive tweaks */
 @media (max-width: 1024px) { .map-container { height: 200px; } }
 @media (max-width: 768px)  { .map-container { height: 180px; } }
 @media (max-width: 480px)  { .map-container { height: 150px; } }

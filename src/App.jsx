@@ -145,7 +145,7 @@ const App = () => {
   };
 
   const handleDeleteMenu = async (restaurantId, menuId) => {
-    console.log("Deleting menu:", { restaurantId, menuId });
+
 
     try {
       await menuService.deleteMenu(restaurantId, menuId);
@@ -173,7 +173,7 @@ const App = () => {
       <Routes>
         {user ? (
           <>
-            {/* Protected Routes */}
+           
             <Route
               path="/restaurant"
               element={
@@ -253,7 +253,7 @@ const App = () => {
           </>
         ) : (
           <>
-            {/* Public Routes */}
+           
             <Route
               path="/sign-up"
               element={<SignUp handleSignUp={handleSignUp} user={user} />}
